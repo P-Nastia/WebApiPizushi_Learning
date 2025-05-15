@@ -17,12 +17,16 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IImageService, ImageService>();
 
 builder.Services.AddControllers();
+builder.Services.AddCors();// щоби сервери могли взаємодіяти між собою
 
 var app = builder.Build();
-app.UseSwagger();
-app.UseSwaggerUI();
 
 // Configure the HTTP request pipeline.
+
+app.UseCors(x => x.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
+
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseAuthorization();
 
