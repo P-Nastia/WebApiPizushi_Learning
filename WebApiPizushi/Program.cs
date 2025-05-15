@@ -12,11 +12,15 @@ builder.Services.AddDbContext<AppDbContext>(opt => opt.UseNpgsql(builder.Configu
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());// реєстрація AutoMapper
 
+builder.Services.AddSwaggerGen();
+
 builder.Services.AddScoped<IImageService, ImageService>();
 
 builder.Services.AddControllers();
 
 var app = builder.Build();
+app.UseSwagger();
+app.UseSwaggerUI();
 
 // Configure the HTTP request pipeline.
 
