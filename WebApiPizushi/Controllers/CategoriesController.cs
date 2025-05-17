@@ -28,8 +28,8 @@ public class CategoriesController(AppDbContext context,
         {
             return BadRequest(ModelState);
         }
-        var exists = context.Categories.Where(x => x.Name == model.Name).FirstOrDefaultAsync();
-        if (exists != null)
+        var repeated = await context.Categories.Where(x => x.Name == model.Name).SingleOrDefaultAsync();
+        if (repeated != null)
         {
             return BadRequest($"{model.Name} already exists");
         }

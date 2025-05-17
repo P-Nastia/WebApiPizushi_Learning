@@ -11,5 +11,6 @@ public class CategoryCreateModel
     [Required(ErrorMessage = "Slug is required")]
     [StringLength(250, ErrorMessage = "Slug has to be no longer than 250 charachters")]
     public string Slug { get; set; } = string.Empty;
+    [Required(ErrorMessage = "ImageFile is required")]
     public IFormFile? ImageFile { get; set; } = null;
 }
