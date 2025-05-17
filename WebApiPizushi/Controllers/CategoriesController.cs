@@ -28,6 +28,11 @@ public class CategoriesController(AppDbContext context,
         {
             return BadRequest(ModelState);
         }
+        var exists = context.Categories.Where(x => x.Name == model.Name).FirstOrDefaultAsync();
+        if (exists != null)
+        {
+            return BadRequest($"{model.Name} already exists");
+        }
         var entity = mapper.Map<CategoryEntity>(model);
         entity.Image = await imageService.SaveImageAsync(model.ImageFile!);
         await context.Categories.AddAsync(entity);
