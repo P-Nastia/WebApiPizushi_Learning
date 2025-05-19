@@ -13,5 +13,8 @@ public class CategoryMapper : Profile
         CreateMap<CategoryEntity, CategoryItemModel>();
         CreateMap<CategoryCreateModel, CategoryEntity>()
             .ForMember(x => x.Image, opt => opt.Ignore());
+        CreateMap<CategoryEditModel, CategoryEntity>();
+        CreateMap<CategoryEntity, CategoryEditModel>()
+            .ForMember(x => x.ImageFile, opt => opt.Ignore());
     }
 }
