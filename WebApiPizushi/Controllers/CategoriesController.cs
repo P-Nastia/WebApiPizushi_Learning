@@ -1,12 +1,10 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Threading.Tasks;
 using WebApiPizushi.Data;
 using WebApiPizushi.Data.Entities;
 using WebApiPizushi.Interfaces;
 using WebApiPizushi.Models.Category;
-using WebApiPizushi.Services;
 
 namespace WebApiPizushi.Controllers;
 
@@ -18,7 +16,7 @@ public class CategoriesController(AppDbContext context,
     [HttpGet]
     public async Task<IActionResult> List()
     {
-        var model = await mapper.ProjectTo<CategoryItemModel>(context.Categories).ToListAsync();
+        var model = await mapper.ProjectTo<CategoryItemModel>(context.Categories.OrderBy(x=>x.Id)).ToListAsync();
 
         return Ok(model);
     }
