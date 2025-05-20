@@ -1,8 +1,11 @@
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
 using WebApiPizushi.Data;
 using WebApiPizushi.Interfaces;
+using WebApiPizushi.Models.Category;
 using WebApiPizushi.Services;
+using WebApiPizushi.Validators.Category;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +20,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IImageService, ImageService>();
 
 builder.Services.AddControllers();
+
+builder.Services.AddScoped<IValidator<CategoryCreateModel>, CategoryCreateValidator>();
 builder.Services.AddCors();// щоби сервери могли взаємодіяти між собою
 
 var app = builder.Build();
