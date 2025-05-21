@@ -12,8 +12,7 @@ namespace WebApiPizushi.Controllers;
 [Route("api/[controller]")]
 [ApiController]
 public class CategoriesController(AppDbContext context,
-    IMapper mapper,IImageService imageService,
-    IValidator<CategoryCreateModel> createValidator) : ControllerBase
+    IMapper mapper,IImageService imageService) : ControllerBase
 {
     [HttpGet]
     public async Task<IActionResult> List()
@@ -25,11 +24,6 @@ public class CategoriesController(AppDbContext context,
     [HttpPost("create")]
     public async Task<IActionResult> Create([FromForm] CategoryCreateModel model)
     {
-        var res = await createValidator.ValidateAsync(model);
-        if (!res.IsValid)
-        {
-            return BadRequest(res.Errors);
-        }
         var repeated = await context.Categories.Where(x => x.Name == model.Name).SingleOrDefaultAsync();
         if (repeated != null)
         {

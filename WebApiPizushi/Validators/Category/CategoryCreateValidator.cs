@@ -19,8 +19,6 @@ public class CategoryCreateValidator : AbstractValidator<CategoryCreateModel>
             .MaximumLength(250)
             .WithMessage("Slug has to be no longer than 250 charachters");
         RuleFor(x => x.ImageFile)
-            .NotNull()
-            .WithMessage("Image file is required")
             .NotEmpty()
             .WithMessage("Image file is required");
     }
