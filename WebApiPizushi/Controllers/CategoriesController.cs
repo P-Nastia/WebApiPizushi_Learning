@@ -34,32 +34,22 @@ public class CategoriesController(AppDbContext context,
     [HttpGet("{id}")]
     public async Task<IActionResult> GetItemById(int id)
     {
-        var item = await context.Categories.Where(x => x.Id == id).SingleOrDefaultAsync();
-        if (item == null)
+        var model = await mapper
+            .ProjectTo<CategoryItemModel>(context.Categories.Where(x => x.Id == id))
+            .SingleOrDefaultAsync();
+        if (model == null)
         {
             return NotFound();
         }
-        return Ok(item);
+        return Ok(model);
     }
-    [HttpPost("edit")]
+    [HttpPut("edit")] // якщо є метод Put -- то це означає, що це edit / зміна даних
     public async Task<IActionResult> Edit([FromForm] CategoryEditModel model)
     {
-
-        if (!ModelState.IsValid)
-        {
-            return BadRequest(ModelState);
-        }
         var existing = await context.Categories.FirstOrDefaultAsync(x => x.Id == model.Id);
         if (existing == null)
         {
             return NotFound();
-        }
-
-        var duplicate = await context.Categories.FirstOrDefaultAsync(x => x.Id != model.Id && x.Name == model.Name);
-        if (duplicate != null)
-        {
-            ModelState.AddModelError("Name", "Така категорія уже існує");
-            return BadRequest(ModelState);
         }
 
         existing = mapper.Map(model, existing);
@@ -71,6 +61,6 @@ public class CategoriesController(AppDbContext context,
         }
         await context.SaveChangesAsync();
 
-        return Ok(existing);
+        return Ok();
     }
 }
