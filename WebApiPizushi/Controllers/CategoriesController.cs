@@ -25,11 +25,6 @@ public class CategoriesController(AppDbContext context,
     [HttpPost("create")]
     public async Task<IActionResult> Create([FromForm] CategoryCreateModel model)
     {
-        var repeated = await context.Categories.Where(x => x.Name == model.Name).SingleOrDefaultAsync();
-        if (repeated != null)
-        {
-            return BadRequest($"{model.Name} already exists");
-        }
         var entity = mapper.Map<CategoryEntity>(model);
         entity.Image = await imageService.SaveImageAsync(model.ImageFile!);
         await context.Categories.AddAsync(entity);
