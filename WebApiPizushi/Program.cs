@@ -23,13 +23,19 @@ builder.Services.AddScoped<IImageService, ImageService>();
 
 builder.Services.AddControllers();
 
+//Виключаємо стандартну валідацію через ModelState
+
 builder.Services.Configure<ApiBehaviorOptions>(options =>
 {
     options.SuppressModelStateInvalidFilter = true;
 });
 
+//Додаємо валідацію через FluentValidation
+//Шукаємо всі можливі валідатори, які наслідуються від AbstractValidator
+// Фільтр може змінювати дані до і після контролера
 builder.Services.AddValidatorsFromAssemblies(AppDomain.CurrentDomain.GetAssemblies());
 
+//Додаємо фільтр
 builder.Services.AddMvc(options =>
 {
     options.Filters.Add<ValidationFilter>();

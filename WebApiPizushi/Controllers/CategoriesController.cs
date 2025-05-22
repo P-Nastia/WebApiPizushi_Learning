@@ -9,6 +9,7 @@ using WebApiPizushi.Models.Category;
 
 namespace WebApiPizushi.Controllers;
 
+// це фільтр
 [Route("api/[controller]")]
 [ApiController]
 public class CategoriesController(AppDbContext context,
