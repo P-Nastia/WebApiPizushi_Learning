@@ -1,7 +1,10 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
+using WebApiPizushi.Constants;
 using WebApiPizushi.Data.Entities;
+using WebApiPizushi.Data.Entities.Identity;
 using WebApiPizushi.Interfaces;
 using WebApiPizushi.Models.Seeder;
 
@@ -15,6 +18,8 @@ public static class DbSeeder
         var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
         var mapper = scope.ServiceProvider.GetRequiredService<IMapper>();
         var imageService = scope.ServiceProvider.GetRequiredService<IImageService>();
+        var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<RoleEntity>>();
+        var userManager = scope.ServiceProvider.GetRequiredService<UserManager<UserEntity>>();
 
         context.Database.Migrate();
 
@@ -45,6 +50,23 @@ public static class DbSeeder
             {
                 Console.WriteLine("Not found file Categories.json");
             }
+        }
+
+        if (!context.Roles.Any())
+        {
+            foreach (var roleName in Roles.AllRoles)
+            {
+                var result = await roleManager.CreateAsync(new(roleName));
+                if (!result.Succeeded)
+                {
+                    Console.WriteLine("Error Create Role {0}", roleName);
+                }
+            }
+        }
+
+        if (!context.Users.Any())
+        {
+
         }
     }
 }
