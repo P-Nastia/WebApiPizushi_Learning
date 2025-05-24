@@ -2,7 +2,6 @@
   {
     "FirstName": "Адмін",
     "LastName": "Системний",
-    "UserName": "admin@example.com",
     "Email": "admin@example.com",
     "Password": "Admin123!",
     "Image": "https://thispersondoesnotexist.com/",
@@ -11,7 +10,6 @@
   {
     "FirstName": "Наталія",
     "LastName": "Гриценко",
-    "UserName": "natalia.grytsenko@example.com",
     "Email": "natalia.grytsenko@example.com",
     "Password": "bb123456",
     "Image": "https://thispersondoesnotexist.com/",
@@ -20,7 +18,6 @@
   {
     "FirstName": "Владислав",
     "LastName": "Лисенко",
-    "UserName": "vlad.lysenko@example.com",
     "Email": "vlad.lysenko@example.com",
     "Password": "bb123456",
     "Image": "https://thispersondoesnotexist.com/",
@@ -29,7 +26,6 @@
   {
     "FirstName": "Олеся",
     "LastName": "Черненко",
-    "UserName": "olesya.chernenko@example.com",
     "Email": "olesya.chernenko@example.com",
     "Password": "password",
     "Image": "https://thispersondoesnotexist.com/",
