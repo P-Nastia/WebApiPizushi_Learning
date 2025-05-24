@@ -30,11 +30,19 @@ builder.Services.AddIdentity<UserEntity, RoleEntity>(options =>
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());// реєстрація AutoMapper
 
-builder.Services.AddSwaggerGen();
-
 builder.Services.AddScoped<IImageService, ImageService>();
+builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
 
 builder.Services.AddControllers();
+
+var assemblyName = typeof(Program).Assembly.GetName().Name; // dll назва файла
+
+builder.Services.AddSwaggerGen(opt =>
+{
+    var fileDoc = $"{assemblyName}.xml";
+    var filePath = Path.Combine(AppContext.BaseDirectory, fileDoc);
+    opt.IncludeXmlComments(filePath); // включаємо xml документацію до роботи swagger 
+});
 
 //Виключаємо стандартну валідацію через ModelState
 

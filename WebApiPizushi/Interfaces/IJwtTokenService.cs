@@ -1,7 +1,9 @@
-﻿namespace WebApiPizushi.Interfaces
+﻿using WebApiPizushi.Data.Entities.Identity;
+
+namespace WebApiPizushi.Interfaces
 {
     public interface IJwtTokenService
     {
-        Task<string> CreateTokenAsync();
+        Task<string> CreateTokenAsync(UserEntity user);
     }
 }
