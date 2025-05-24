@@ -63,4 +63,18 @@ public class CategoriesController(AppDbContext context,
 
         return Ok();
     }
+    [HttpDelete("delete")]
+    public async Task<IActionResult> Delete(CategoryDeleteModel model)
+    {
+        var entity = await context.Categories.SingleOrDefaultAsync(x => x.Id == model.Id);
+        
+        if (!string.IsNullOrEmpty(entity.Image))
+        {
+            await imageService.DeleteImageAsync(entity.Image);
+        }
+
+        context.Categories.Remove(entity);
+        await context.SaveChangesAsync();
+        return Ok();
+    }
 }
