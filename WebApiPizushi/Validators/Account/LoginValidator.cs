@@ -8,24 +8,29 @@ namespace WebApiPizushi.Validators.Account
 {
     public class LoginValidator : AbstractValidator<LoginModel>
     {
-        public LoginValidator(UserManager<UserEntity> um)
+        public LoginValidator(UserManager<UserEntity> userManager)
         {
             RuleFor(x => x.Email)
-                .NotEmpty().
-                WithMessage("Email is required");
-            RuleFor(x => x.Password)
-                .NotEmpty()
-                .WithMessage("Password is required");
-            RuleFor(x=>x.Email)
-                .MustAsync(async (model,email, cancellationToken) =>
+                .NotEmpty().WithMessage("Електронна пошта є обов'язковою")
+                .EmailAddress().WithMessage("Некоректний формат електронної пошти")
+                .MustAsync(async (email, cancellation) =>
                 {
-                    var user = await um.FindByEmailAsync(model.Email);
-                    if (user == null)
-                        return false;
+                    var user = await userManager.FindByEmailAsync(email);
+                    return user != null;
+                }).WithMessage("Користувача з такою поштою не знайдено");
 
-                    return await um.CheckPasswordAsync(user, model.Password);
+            RuleFor(x => x.Password)
+                .NotEmpty().WithMessage("Пароль є обов'язковим")
+                .MinimumLength(6).WithMessage("Пароль повинен містити щонайменше 6 символів");
+
+            RuleFor(x => x)
+                .MustAsync(async (model, cancellation) =>
+                {
+                    var user = await userManager.FindByEmailAsync(model.Email);
+                    if (user == null) return false;
+                    return await userManager.CheckPasswordAsync(user, model.Password);
                 })
-            .WithMessage("Invalid email or password");
+                .WithMessage("Невірний email або пароль");
         }
     }
 }

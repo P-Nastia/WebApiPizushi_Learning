@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using WebApiPizushi.Constants;
 using WebApiPizushi.Data;
 using WebApiPizushi.Data.Entities;
 using WebApiPizushi.Interfaces;
@@ -32,6 +34,7 @@ public class CategoriesController(AppDbContext context,
         return Ok(entity);
     }
     [HttpGet("{id}")]
+    [Authorize(Roles = $"{Roles.Admin}")] // user має бути авторизований і бути адміном для цієї дії 
     public async Task<IActionResult> GetItemById(int id)
     {
         var model = await mapper
