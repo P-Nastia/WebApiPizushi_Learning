@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 using Microsoft.AspNetCore.Identity;
-using WebApiPizushi.Data.Entities.Identity;
+using Domain.Entities.Identity;
 using WebApiPizushi.Models.Account;
 using WebApiPizushi.Models.Category;
 

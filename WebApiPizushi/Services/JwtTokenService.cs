@@ -2,7 +2,7 @@
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using WebApiPizushi.Data.Entities.Identity;
+using Domain.Entities.Identity;
 using WebApiPizushi.Interfaces;
 
 namespace WebApiPizushi.Services;

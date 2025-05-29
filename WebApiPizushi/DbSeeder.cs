@@ -3,9 +3,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
 using WebApiPizushi.Constants;
-using WebApiPizushi.Data;
-using WebApiPizushi.Data.Entities;
-using WebApiPizushi.Data.Entities.Identity;
+using Domain;
+using Domain.Entities;
+using Domain.Entities.Identity;
 using WebApiPizushi.Interfaces;
 using WebApiPizushi.Models.Seeder;
 

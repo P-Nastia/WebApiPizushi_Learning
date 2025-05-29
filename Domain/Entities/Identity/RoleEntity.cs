@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace WebApiPizushi.Data.Entities.Identity;
+namespace Domain.Entities.Identity;
 
 public class RoleEntity : IdentityRole<long>
 {

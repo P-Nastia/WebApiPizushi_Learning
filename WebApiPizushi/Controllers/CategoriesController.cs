@@ -4,8 +4,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApiPizushi.Constants;
-using WebApiPizushi.Data;
-using WebApiPizushi.Data.Entities;
+using Domain;
+using Domain.Entities;
 using WebApiPizushi.Interfaces;
 using WebApiPizushi.Models.Category;
 

@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
-using WebApiPizushi.Data;
+using Domain;
 
 #nullable disable
 
-namespace WebApiPizushi.Migrations
+namespace Domain.Migrations
 {
     [DbContext(typeof(AppDbContext))]
     [Migration("20250513165015_Add_tblCategories")]
@@ -25,7 +25,7 @@ namespace WebApiPizushi.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("WebApiPizushi.Data.Entities.CategoryEntity", b =>
+            modelBuilder.Entity("Domain.Entities.CategoryEntity", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()

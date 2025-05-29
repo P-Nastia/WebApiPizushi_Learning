@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using WebApiPizushi.Data.Entities.Identity;
+using Domain.Entities.Identity;
 using WebApiPizushi.Models.Account;
 using WebApiPizushi.Models.Seeder;
 

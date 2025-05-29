@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using WebApiPizushi.Data.Entities;
+using Domain.Entities;
 using WebApiPizushi.Models.Category;
 using WebApiPizushi.Models.Seeder;
 

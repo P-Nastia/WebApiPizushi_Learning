@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 using Microsoft.EntityFrameworkCore;
-using WebApiPizushi.Data;
+using Domain;
 using WebApiPizushi.Models.Category;
 
 namespace WebApiPizushi.Validators.Category;

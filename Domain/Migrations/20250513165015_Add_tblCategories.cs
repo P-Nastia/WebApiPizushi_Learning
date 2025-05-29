@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace WebApiPizushi.Migrations
+namespace Domain.Migrations
 {
     /// <inheritdoc />
     public partial class Add_tblCategories : Migration

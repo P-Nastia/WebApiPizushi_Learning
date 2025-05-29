@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using WebApiPizushi.Data.Entities;
-using WebApiPizushi.Data.Entities.Identity;
+using Domain.Entities;
+using Domain.Entities.Identity;
 
-namespace WebApiPizushi.Data;
+namespace Domain;
 
 public class AppDbContext : IdentityDbContext<UserEntity, RoleEntity, long>
 {

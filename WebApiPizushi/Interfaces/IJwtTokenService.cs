@@ -1,4 +1,4 @@
-﻿using WebApiPizushi.Data.Entities.Identity;
+﻿using Domain.Entities.Identity;
 
 namespace WebApiPizushi.Interfaces
 {
