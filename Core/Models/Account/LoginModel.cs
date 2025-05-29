@@ -1,4 +1,4 @@
-﻿namespace WebApiPizushi.Models.Account;
+﻿namespace Core.Models.Account;
 
 public class LoginModel
 {

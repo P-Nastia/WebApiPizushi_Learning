@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using Domain.Entities.Identity;
-using WebApiPizushi.Models.Account;
-using WebApiPizushi.Models.Seeder;
+using Core.Models.Account;
+using Core.Models.Seeder;
 
-namespace WebApiPizushi.Mapper;
+namespace Core.Mapper;
 
 public class UserMapper : Profile
 {

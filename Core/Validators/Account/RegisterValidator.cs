@@ -1,9 +1,9 @@
 ﻿using FluentValidation;
 using Microsoft.AspNetCore.Identity;
 using Domain.Entities.Identity;
-using WebApiPizushi.Models.Account;
+using Core.Models.Account;
 
-namespace WebApiPizushi.Validators.Account
+namespace Core.Validators.Account
 {
     public class RegisterValidator : AbstractValidator<RegisterModel>
     {

@@ -1,6 +1,6 @@
 ﻿using Domain.Entities.Identity;
 
-namespace WebApiPizushi.Interfaces
+namespace Core.Interfaces
 {
     public interface IJwtTokenService
     {

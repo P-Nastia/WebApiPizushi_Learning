@@ -11,10 +11,10 @@ using WebApiPizushi;
 using Domain;
 using Domain.Entities.Identity;
 using WebApiPizushi.Filters;
-using WebApiPizushi.Interfaces;
-using WebApiPizushi.Models.Category;
-using WebApiPizushi.Services;
-using WebApiPizushi.Validators.Category;
+using Core.Interfaces;
+using Core.Models.Category;
+using Core.Services;
+using Core.Validators.Category;
 
 var builder = WebApplication.CreateBuilder(args);
 

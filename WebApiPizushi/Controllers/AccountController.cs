@@ -6,9 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 using WebApiPizushi.Constants;
 using Domain.Entities;
 using Domain.Entities.Identity;
-using WebApiPizushi.Interfaces;
-using WebApiPizushi.Models.Account;
-using WebApiPizushi.Services;
+using Core.Interfaces;
+using Core.Models.Account;
+using Core.Services;
 
 namespace WebApiPizushi.Controllers
 {

@@ -1,9 +1,11 @@
-﻿using SixLabors.ImageSharp;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
+using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Formats.Webp;
 using SixLabors.ImageSharp.Processing;
-using WebApiPizushi.Interfaces;
+using Core.Interfaces;
 
-namespace WebApiPizushi.Services;
+namespace Core.Services;
 
 public class ImageService(IConfiguration configuration) : IImageService
 {

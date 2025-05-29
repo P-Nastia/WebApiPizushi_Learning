@@ -1,11 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Http;
 
-namespace WebApiPizushi.Models.Category;
+namespace Core.Models.Category;
 
-public class CategoryEditModel
+public class CategoryCreateModel
 {
-    public int Id { get; set; }
     public string Name { get; set; } = string.Empty;
+
     public string Slug { get; set; } = string.Empty;
     public IFormFile? ImageFile { get; set; } = null;
 }

@@ -1,10 +1,10 @@
 ﻿using FluentValidation;
 using Microsoft.AspNetCore.Identity;
 using Domain.Entities.Identity;
-using WebApiPizushi.Models.Account;
-using WebApiPizushi.Models.Category;
+using Core.Models.Account;
+using Core.Models.Category;
 
-namespace WebApiPizushi.Validators.Account
+namespace Core.Validators.Account
 {
     public class LoginValidator : AbstractValidator<LoginModel>
     {

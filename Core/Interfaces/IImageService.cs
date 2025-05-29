@@ -1,4 +1,6 @@
-﻿namespace WebApiPizushi.Interfaces;
+﻿using Microsoft.AspNetCore.Http;
+
+namespace Core.Interfaces;
 
 public interface IImageService
 {

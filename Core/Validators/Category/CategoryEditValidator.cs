@@ -1,9 +1,9 @@
 ﻿using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Domain;
-using WebApiPizushi.Models.Category;
+using Core.Models.Category;
 
-namespace WebApiPizushi.Validators.Category;
+namespace Core.Validators.Category;
 
 public class CategoryEditValidator : AbstractValidator<CategoryEditModel>
 {

@@ -6,8 +6,8 @@ using Microsoft.EntityFrameworkCore;
 using WebApiPizushi.Constants;
 using Domain;
 using Domain.Entities;
-using WebApiPizushi.Interfaces;
-using WebApiPizushi.Models.Category;
+using Core.Interfaces;
+using Core.Models.Category;
 
 namespace WebApiPizushi.Controllers;
 

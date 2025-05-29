@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using Domain.Entities;
-using WebApiPizushi.Models.Category;
-using WebApiPizushi.Models.Seeder;
+using Core.Models.Category;
+using Core.Models.Seeder;
 
-namespace WebApiPizushi.Mapper;
+namespace Core.Mapper;
 
 public class CategoryMapper : Profile
 {

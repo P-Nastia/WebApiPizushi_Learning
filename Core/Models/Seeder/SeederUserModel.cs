@@ -1,4 +1,4 @@
-﻿namespace WebApiPizushi.Models.Seeder;
+﻿namespace Core.Models.Seeder;
 
 public class SeederUserModel
 {

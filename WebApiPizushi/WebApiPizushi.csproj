@@ -32,7 +32,7 @@
 		<Content Include="images\**\*.*">
 			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
 		</Content>
-		<ProjectReference Include="..\Domain\Domain.csproj" />
+		<ProjectReference Include="..\Core\Core.csproj" />
 		<Content Update="Helpers\JsonData\Users.json">
 		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</Content>

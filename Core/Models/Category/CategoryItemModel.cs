@@ -1,4 +1,4 @@
-﻿namespace WebApiPizushi.Models.Category;
+﻿namespace Core.Models.Category;
 
 public class CategoryItemModel
 {

@@ -6,8 +6,8 @@ using WebApiPizushi.Constants;
 using Domain;
 using Domain.Entities;
 using Domain.Entities.Identity;
-using WebApiPizushi.Interfaces;
-using WebApiPizushi.Models.Seeder;
+using Core.Interfaces;
+using Core.Models.Seeder;
 
 namespace WebApiPizushi;
 
