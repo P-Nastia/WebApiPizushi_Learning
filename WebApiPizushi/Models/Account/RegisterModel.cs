@@ -21,7 +21,7 @@
         public string Email { get; set; } = String.Empty;
 
         /// <summary>
-        /// Пароль пошта користувача
+        /// Пароль користувача
         /// </summary>
         /// <example>pass123?</example>
         public string Password { get; set; } = String.Empty;

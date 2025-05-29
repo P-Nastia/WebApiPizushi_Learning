@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System;
 using WebApiPizushi.Data.Entities;
 using WebApiPizushi.Data.Entities.Identity;
 
