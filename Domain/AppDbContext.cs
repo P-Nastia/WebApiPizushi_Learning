@@ -10,6 +10,7 @@ public class AppDbContext : IdentityDbContext<UserEntity, RoleEntity, long>
     public AppDbContext(DbContextOptions<AppDbContext> opt) : base(opt) { }
     public DbSet<CategoryEntity> Categories { get; set; }
     public DbSet<IngredientEntity> Ingredients { get; set; }
+    public DbSet<ProductSizeEntity> ProductSizes { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
