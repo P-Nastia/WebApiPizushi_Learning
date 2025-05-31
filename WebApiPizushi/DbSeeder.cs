@@ -138,5 +138,31 @@ public static class DbSeeder
                 Console.WriteLine("Not found file Ingredients.json");
             }
         }
+
+        if (!context.ProductSizes.Any())
+        {
+            var jsonFile = Path.Combine(Directory.GetCurrentDirectory(), "Helpers", "JsonData", "ProductSizes.json");
+
+            if (File.Exists(jsonFile))
+            {
+                var jsonData = await File.ReadAllTextAsync(jsonFile);
+                try
+                {
+                    var items = JsonSerializer.Deserialize<List<SeederProductSizeModel>>(jsonData);
+                    var entityItems = mapper.Map<List<ProductSizeEntity>>(items);
+                    
+                    await context.ProductSizes.AddRangeAsync(entityItems);
+                    await context.SaveChangesAsync();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Error Json Parse Data", ex.Message);
+                }
+            }
+            else
+            {
+                Console.WriteLine("Not found file ProductSizes.json");
+            }
+        }
     }
 }

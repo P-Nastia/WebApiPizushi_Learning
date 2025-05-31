@@ -33,6 +33,9 @@
 			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
 		</Content>
 		<ProjectReference Include="..\Core\Core.csproj" />
+		<Content Update="Helpers\JsonData\ProductSizes.json">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
 		<Content Update="Helpers\JsonData\Ingredients.json">
 		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</Content>
