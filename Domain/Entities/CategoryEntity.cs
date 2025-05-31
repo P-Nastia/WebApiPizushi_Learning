@@ -12,5 +12,5 @@ public class CategoryEntity : BaseEntity<long>
     public string Image { get; set; } = string.Empty;
     [StringLength(250)]
     public string Slug { get; set; } = string.Empty;
-    //public ICollection<ProductEntity> Products { get; set; }
+    public ICollection<ProductEntity>? Products { get; set; }
 }
