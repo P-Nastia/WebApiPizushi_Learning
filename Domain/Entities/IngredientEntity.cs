@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Domain.Entities.Identity;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -15,4 +16,6 @@ public class IngredientEntity : BaseEntity<long>
     public string Name { get; set; } = string.Empty;
     [StringLength(200)]
     public string Image { get; set; } = string.Empty;
+    public ICollection<ProductIngredientEntity>? ProductIngredients { get; set; }
+
 }

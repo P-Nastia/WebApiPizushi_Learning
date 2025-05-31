@@ -1,5 +1,6 @@
 ﻿
 
+using Domain.Entities.Identity;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -22,4 +23,5 @@ public class ProductEntity : BaseEntity<long>
     [ForeignKey("ProductSize")]
     public long? ProductSizeId { get; set; } // не обов'язкова наявність розміру
     public ProductSizeEntity? ProductSize { get; set; }
+    public ICollection<ProductIngredientEntity>? ProductIngredients { get; set; }
 }
