@@ -1,6 +1,5 @@
 using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
@@ -9,15 +8,11 @@ using Microsoft.OpenApi.Models;
 using System.Text;
 using WebApiPizushi;
 using Domain;
-using Domain.Entities.Identity;
 using WebApiPizushi.Filters;
 using Core.Interfaces;
-using Core.Models.Category;
 using Core.Services;
-using Core.Validators.Category;
 using Core.Models.Account;
 using Core.Extensions;
-using System.Runtime.CompilerServices;
 
 var builder = WebApplication.CreateBuilder(args);
 
