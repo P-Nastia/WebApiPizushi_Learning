@@ -164,5 +164,56 @@ public static class DbSeeder
                 Console.WriteLine("Not found file ProductSizes.json");
             }
         }
+
+        if (!context.Products.Any())
+        {
+            var caesar = new ProductEntity
+            {
+                Name = "Цезаре",
+                Slug = "caesar",
+                Price = 195,
+                Weight = 540,
+                CategoryId = 1,
+                ProductSizeId = 1
+            };
+            context.Products.Add(caesar);
+            await context.SaveChangesAsync();
+            var ingredients = await context.Ingredients.ToListAsync();
+            foreach(var ingredient in ingredients)
+            {
+                var productIngredient = new ProductIngredientEntity
+                {
+                    ProductId = caesar.Id,
+                    IngredientId = ingredient.Id
+                };
+                context.ProductIngredients.Add(productIngredient);
+            }
+            await context.SaveChangesAsync();
+
+            string[] images = {
+         "https://emeals-menubuilder.s3.amazonaws.com/v1/recipes/653321/pictures/large_chicken-caesar-pizza.jpg",
+         "https://cdn.lifehacker.ru/wp-content/uploads/2022/03/11187_1522960128.7729_1646727034-1170x585.jpg",
+         "https://i.obozrevatel.com/food/recipemain/2020/2/5/zhenygohvrxm865gbgzsoxnru3mxjfhwwjd4bmvp.jpeg?size=636x424"
+     };
+
+            foreach (var imageUrl in images)
+            {
+                try
+                {
+                    var productImage = new ProductImageEntity
+                    {
+                        ProductId = caesar.Id,
+                        Name = await imageService.SaveImageFromUrlAsync(imageUrl)
+                    };
+                    context.ProductImages.Add(productImage);
+                }
+                catch(Exception ex)
+                {
+                    Console.WriteLine("Error Json Parse Data for PRODUCT IMAGE", ex.Message);
+                }
+            }
+            await context.SaveChangesAsync();
+
+        }
     }
 }
