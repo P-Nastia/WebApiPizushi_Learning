@@ -13,6 +13,7 @@ public class AppDbContext : IdentityDbContext<UserEntity, RoleEntity, long>
     public DbSet<ProductSizeEntity> ProductSizes { get; set; }
     public DbSet<ProductEntity> Products { get; set; }
     public DbSet<ProductIngredientEntity> ProductIngredients { get; set; }
+    public DbSet<ProductImageEntity> ProductImages { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

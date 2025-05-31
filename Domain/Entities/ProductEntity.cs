@@ -24,4 +24,5 @@ public class ProductEntity : BaseEntity<long>
     public long? ProductSizeId { get; set; } // не обов'язкова наявність розміру
     public ProductSizeEntity? ProductSize { get; set; }
     public ICollection<ProductIngredientEntity>? ProductIngredients { get; set; }
+    public ICollection<ProductImageEntity>? ProductImages { get; set; }
 }
