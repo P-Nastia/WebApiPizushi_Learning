@@ -39,7 +39,7 @@ public static class DbSeeder
                     {
                         entity.Image = await imageService.SaveImageFromUrlAsync(entity.Image);
                     }
-                    await context.AddRangeAsync(entityItems);
+                    await context.Categories.AddRangeAsync(entityItems);
                     await context.SaveChangesAsync();
                 }
                 catch (Exception ex)
@@ -107,6 +107,35 @@ public static class DbSeeder
             else
             {
                 Console.WriteLine("Not Found File Users.json");
+            }
+        }
+
+        if (!context.Ingredients.Any())
+        {
+            var jsonFile = Path.Combine(Directory.GetCurrentDirectory(), "Helpers", "JsonData", "Ingredients.json");
+
+            if (File.Exists(jsonFile))
+            {
+                var jsonData = await File.ReadAllTextAsync(jsonFile);
+                try
+                {
+                    var items = JsonSerializer.Deserialize<List<SeederIngredientModel>>(jsonData);
+                    var entityItems = mapper.Map<List<IngredientEntity>>(items);
+                    foreach (var entity in entityItems)
+                    {
+                        entity.Image = await imageService.SaveImageFromUrlAsync(entity.Image);
+                    }
+                    await context.Ingredients.AddRangeAsync(entityItems);
+                    await context.SaveChangesAsync();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Error Json Parse Data", ex.Message);
+                }
+            }
+            else
+            {
+                Console.WriteLine("Not found file Ingredients.json");
             }
         }
     }
