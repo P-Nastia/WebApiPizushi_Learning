@@ -16,14 +16,14 @@ namespace WebApiPizushi.Controllers
 
             return Ok(model);
         }
-        [HttpGet("id")]
+        [HttpGet("id/{id}")]
         public async Task<IActionResult> GetById(int id)
         {
             var model = await productService.GetById(id);
 
             return Ok(model);
         }
-        [HttpGet("slug")]
+        [HttpGet("slug/{slug}")]
         public async Task<IActionResult> GetBySlug(string slug)
         {
             var model = await productService.GetBySlug(slug);

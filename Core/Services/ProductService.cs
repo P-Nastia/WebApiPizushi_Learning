@@ -20,6 +20,10 @@ namespace Core.Services
                .ThenInclude(pi => pi.Ingredient)
             .FirstOrDefaultAsync(x => x.Id == id);
 
+            entity.ProductImages = entity.ProductImages?
+                    .OrderBy(img => img.Priority)
+                    .ToList();
+
             var model = mapper.Map<ProductItemModel>(entity);
 
             return model;
@@ -27,7 +31,7 @@ namespace Core.Services
 
         public async Task<List<ProductItemModel>> GetBySlug(string slug)
         {
-            var entity = await context.Products
+            var entities = await context.Products
             .Include(p => p.Category)
             .Include(p => p.ProductImages)
             .Include(p => p.ProductSize)
@@ -35,8 +39,14 @@ namespace Core.Services
                .ThenInclude(pi => pi.Ingredient)
             .Where(x => x.Slug == slug)
             .ToListAsync();
+            foreach (var product in entities)
+            {
+                product.ProductImages = product.ProductImages?
+                    .OrderBy(img => img.Priority)
+                    .ToList();
+            }
 
-            var model = mapper.Map<List<ProductItemModel>>(entity);
+            var model = mapper.Map<List<ProductItemModel>>(entities);
 
             return model;
         }
@@ -50,7 +60,12 @@ namespace Core.Services
              .Include(p => p.ProductIngredients)
                  .ThenInclude(pi => pi.Ingredient)
              .ToListAsync();
-
+            foreach (var product in entities)
+            {
+                product.ProductImages = product.ProductImages?
+                    .OrderBy(img => img.Priority)
+                    .ToList();
+            }
             var models = mapper.Map<List<ProductItemModel>>(entities);
             return models;
         }

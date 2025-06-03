@@ -30,7 +30,7 @@ public class CategoriesController(ICategoryService categoryService) : Controller
         return Ok(category);
     }
     [HttpGet("{id}")]
-    [Authorize(Roles = $"{Roles.Admin}")] // user має бути авторизований і бути адміном для цієї дії 
+    //[Authorize(Roles = $"{Roles.Admin}")] // user має бути авторизований і бути адміном для цієї дії 
     public async Task<IActionResult> GetItemById(int id)
     {
         var model = await categoryService.GetItemById(id);
