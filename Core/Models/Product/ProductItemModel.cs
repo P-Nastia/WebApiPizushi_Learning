@@ -1,6 +1,5 @@
 ﻿
 using Core.Models.Category;
-using Core.Models.Product.Image;
 using Core.Models.Product.Ingredient;
 
 namespace Core.Models.Product;

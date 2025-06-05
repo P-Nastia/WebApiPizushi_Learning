@@ -3,15 +3,56 @@ using AutoMapper.QueryableExtensions;
 using Core.Interfaces;
 using Core.Models.Category;
 using Core.Models.Product;
+using Core.Models.Product.Image;
 using Core.Models.Product.Ingredient;
 using Domain;
 using Domain.Entities;
+using Domain.Entities.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace Core.Services
 {
     public class ProductService(IMapper mapper, AppDbContext context,IImageService imageService) : IProductService
     {
+        public async Task<ProductEntity> Create(ProductCreateModel model)
+        {
+            var entity = mapper.Map<ProductEntity>(model);
+            context.Products.Add(entity);
+            await context.SaveChangesAsync();
+            var ingredients = await context.Ingredients.Where(x => model.ProductIngredientsId!.Contains(x.Id)).ToListAsync();
+            foreach (var ingredient in ingredients)
+            {
+                var productIngredient = new ProductIngredientEntity
+                {
+                    ProductId = entity.Id,
+                    IngredientId = ingredient.Id
+                };
+                context.ProductIngredients.Add(productIngredient);
+            }
+            await context.SaveChangesAsync();
+
+            for (int i = 0; i < model.ImageFiles!.Count; i++)
+            {
+                try
+                {
+                    var productImage = new ProductImageEntity
+                    {
+                        ProductId = entity.Id,
+                        Name = await imageService.SaveImageAsync(model.ImageFiles[i]),
+                        Priority = model.ImagePriorities![i]
+                    };
+                    context.ProductImages.Add(productImage);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Error Json Parse Data for PRODUCT IMAGE", ex.Message);
+                }
+            }
+            await context.SaveChangesAsync();
+            return entity;
+        }
+        
+
         public async Task<ProductItemModel> GetById(int id)
         {
             return await context.Products.Where(x=>x.Id == id).ProjectTo<ProductItemModel>(mapper.ConfigurationProvider).FirstOrDefaultAsync();
