@@ -17,19 +17,18 @@ namespace Core.Services
             var entity = mapper.Map<ProductEntity>(model);
             context.Products.Add(entity);
             await context.SaveChangesAsync();
-            var ingredients = await context.Ingredients.Where(x => model.ProductIngredientsId!.Contains(x.Id)).ToListAsync();
-            foreach (var ingredient in ingredients)
+            foreach (var ingId in model.ProductIngredientsId!)
             {
                 var productIngredient = new ProductIngredientEntity
                 {
                     ProductId = entity.Id,
-                    IngredientId = ingredient.Id
+                    IngredientId = ingId
                 };
                 context.ProductIngredients.Add(productIngredient);
             }
             await context.SaveChangesAsync();
 
-            for (int i = 0; i < model.ImageFiles!.Count; i++)
+            for (short i = 0; i < model.ImageFiles!.Count; i++)
             {
                 try
                 {
@@ -37,7 +36,7 @@ namespace Core.Services
                     {
                         ProductId = entity.Id,
                         Name = await imageService.SaveImageAsync(model.ImageFiles[i]),
-                        Priority = model.ImagePriorities![i]
+                        Priority = i,
                     };
                     context.ProductImages.Add(productImage);
                 }

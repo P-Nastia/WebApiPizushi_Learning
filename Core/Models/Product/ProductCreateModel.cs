@@ -12,6 +12,5 @@ public class ProductCreateModel
     public long CategoryId { get; set; }
     public long ProductSizeId { get; set; }
     public List<long>? ProductIngredientsId { get; set; }
-    public List<short>? ImagePriorities { get; set; }
     public List<IFormFile>? ImageFiles { get; set; }
 }

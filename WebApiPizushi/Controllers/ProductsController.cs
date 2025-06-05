@@ -1,6 +1,5 @@
 ﻿using Core.Interfaces;
 using Core.Models.Product;
-using Core.Models.Product.Image;
 using Core.Models.Product.Ingredient;
 using Core.Services;
 using Microsoft.AspNetCore.Http;
@@ -57,12 +56,8 @@ namespace WebApiPizushi.Controllers
         [HttpPost("create")]
         public async Task<IActionResult> Create([FromForm] ProductCreateModel model)
         {
-            if (model.ImagePriorities == null)
-                return BadRequest("Image priorities are empty!");
             if (model.ImageFiles == null)
                 return BadRequest("Image files are empty!");
-            if (model.ImagePriorities.Count != model.ImageFiles.Count)
-                return BadRequest("Number of images and their priorities isn`t the same");
             if (model.ProductIngredientsId == null)
                 return BadRequest("Product ingredients are empty!");
             var entity = await productService.Create(model);
