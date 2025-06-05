@@ -1,6 +1,5 @@
 ﻿
 using Core.Models.Product;
-using Core.Models.Product.Image;
 using Core.Models.Product.Ingredient;
 using Domain.Entities;
 

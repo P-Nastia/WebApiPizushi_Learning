@@ -1,9 +1,7 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Core.Interfaces;
-using Core.Models.Category;
 using Core.Models.Product;
-using Core.Models.Product.Image;
 using Core.Models.Product.Ingredient;
 using Domain;
 using Domain.Entities;

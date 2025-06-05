@@ -9,8 +9,6 @@ namespace Core.Mapperl
         public ImageMapper()
         {
             CreateMap<ProductImageEntity, ProductImageModel>();
-            CreateMap<CreateImageModel, ProductImageEntity>()
-                .ForMember(x => x.Name, opt => opt.Ignore());
         }
     }
 }
