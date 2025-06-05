@@ -1,9 +1,9 @@
 ﻿
-namespace Core.Models.Product;
 
-public class ProductImageModel
+namespace Core.Models.Product.Image;
+
+public class CreateImageModel
 {
-    public long Id { get; set; }
     public string Name { get; set; } = string.Empty;
     public short Priority { get; set; }
 }

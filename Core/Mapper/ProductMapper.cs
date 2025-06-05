@@ -2,6 +2,7 @@
 using Domain.Entities;
 using Core.Models.Seeder;
 using Core.Models.Product;
+using Core.Models.Product.Image;
 
 namespace Core.Mapper;
 
