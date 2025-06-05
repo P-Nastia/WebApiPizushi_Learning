@@ -56,14 +56,29 @@ namespace WebApiPizushi.Controllers
         [HttpPost("create")]
         public async Task<IActionResult> Create([FromForm] ProductCreateModel model)
         {
+
             if (model.ImageFiles == null)
                 return BadRequest("Image files are empty!");
-            if (model.ProductIngredientsId == null)
+            if (model.IngredientIds == null)
                 return BadRequest("Product ingredients are empty!");
             var entity = await productService.Create(model);
             if (entity != null)
                 return Ok(model);
             else return BadRequest("Error create product!");
+        }
+        [HttpGet("sizes")]
+        public async Task<IActionResult> Sizes()
+        {
+            var model = await productService.GetSizesAsync();
+
+            return Ok(model);
+        }
+        [HttpGet("ingredients")]
+        public async Task<IActionResult> Ingredients()
+        {
+            var model = await productService.GetIngredientsAsync();
+
+            return Ok(model);
         }
     }
 }

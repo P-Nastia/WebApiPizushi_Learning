@@ -17,7 +17,7 @@ namespace Core.Services
             var entity = mapper.Map<ProductEntity>(model);
             context.Products.Add(entity);
             await context.SaveChangesAsync();
-            foreach (var ingId in model.ProductIngredientsId!)
+            foreach (var ingId in model.IngredientIds!)
             {
                 var productIngredient = new ProductIngredientEntity
                 {
@@ -58,6 +58,22 @@ namespace Core.Services
         public async Task<List<ProductItemModel>> GetBySlug(string slug)
         {
             return await context.Products.Where(x=>x.Slug == slug).ProjectTo<ProductItemModel>(mapper.ConfigurationProvider).ToListAsync();
+        }
+
+        public async Task<IEnumerable<ProductIngredientModel>> GetIngredientsAsync()
+        {
+            var ingredients = await context.Ingredients
+            .ProjectTo<ProductIngredientModel>(mapper.ConfigurationProvider)
+            .ToListAsync();
+            return ingredients;
+        }
+
+        public async Task<IEnumerable<ProductSizeModel>> GetSizesAsync()
+        {
+            var sizes = await context.ProductSizes
+            .ProjectTo<ProductSizeModel>(mapper.ConfigurationProvider)
+            .ToListAsync();
+            return sizes;
         }
 
         public async Task<List<ProductItemModel>> List()
