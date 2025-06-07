@@ -48,7 +48,24 @@ namespace Core.Services
             await context.SaveChangesAsync();
             return entity;
         }
-        
+
+        public async Task Delete(ProductDeleteModel model)
+        {
+            var product = await context.Products.Where(x => x.Id == model.Id)
+                .Include(x=>x.ProductIngredients)
+                .Include(x=>x.ProductImages)
+                .FirstOrDefaultAsync();
+            if (product!.ProductIngredients != null)
+            {
+                context.ProductIngredients.RemoveRange(product.ProductIngredients);
+            }
+            if (product.ProductImages != null)
+            {
+                context.ProductImages.RemoveRange(product!.ProductImages);
+            }
+            context.Products.Remove(product);
+            await context.SaveChangesAsync();
+        }
 
         public async Task<ProductItemModel> GetById(int id)
         {

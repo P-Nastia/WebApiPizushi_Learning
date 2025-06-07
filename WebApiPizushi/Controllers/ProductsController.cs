@@ -1,4 +1,5 @@
 ﻿using Core.Interfaces;
+using Core.Models.Category;
 using Core.Models.Product;
 using Core.Models.Product.Ingredient;
 using Core.Services;
@@ -79,6 +80,12 @@ namespace WebApiPizushi.Controllers
             var model = await productService.GetIngredientsAsync();
 
             return Ok(model);
+        }
+        [HttpDelete("delete")]
+        public async Task<IActionResult> Delete(ProductDeleteModel model)
+        {
+            await productService.Delete(model);
+            return Ok();
         }
     }
 }
