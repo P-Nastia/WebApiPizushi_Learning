@@ -10,7 +10,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Core.Services
 {
-    public class ProductService(IMapper mapper, AppDbContext context,IImageService imageService) : IProductService
+    public class ProductService(IMapper mapper, AppDbContext context,
+        IImageService imageService) : IProductService
     {
         public async Task<ProductEntity> Create(ProductCreateModel model)
         {
@@ -69,6 +70,58 @@ namespace Core.Services
             }
             context.Products.Remove(product);
             await context.SaveChangesAsync();
+        }
+
+        public async Task<ProductItemModel> Edit(ProductEditModel model)
+        {
+            var entity = await context.Products.Where(x => x.Id == model.Id)
+                .ProjectTo<ProductItemModel>(mapper.ConfigurationProvider)
+                .FirstOrDefaultAsync();
+
+            var imgDelete = entity.ProductImages
+                .Where(x => !model.ImageFiles!.Any(y => y.FileName == x.Name))
+                .ToList();
+
+            foreach(var img in imgDelete)
+            {
+                var productImage = await context.ProductImages
+                    .Where(x => x.Id == img.Id)
+                    .SingleOrDefaultAsync();
+
+                if (productImage != null)
+                {
+                    await imageService.DeleteImageAsync(img.Name);
+                    context.ProductImages.Remove(productImage);
+                }
+            }
+            await context.SaveChangesAsync();
+
+            short p = 0;
+            foreach(var imgFile in model.ImageFiles!)
+            {
+                if(imgFile.ContentType == "old-image")
+                {
+                    var img = await context.ProductImages
+                        .Where(x => x.Name == imgFile.FileName)
+                        .SingleOrDefaultAsync();
+                    img.Priority = p;
+
+                }
+                else
+                {
+                    var productImage = new ProductImageEntity
+                    {
+                        ProductId = entity.Id,
+                        Name = await imageService.SaveImageAsync(imgFile),
+                        Priority = p,
+                    };
+                    context.ProductImages.Add(productImage);
+                }
+                p++;
+            }
+
+            await context.SaveChangesAsync();
+            return entity;
         }
 
         public async Task<ProductItemModel> GetById(int id)
