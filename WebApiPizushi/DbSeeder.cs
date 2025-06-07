@@ -173,13 +173,13 @@ public static class DbSeeder
                 Slug = "caesar",
                 Price = 195,
                 Weight = 540,
-                CategoryId = 1,
+                CategoryId = 18,
                 ProductSizeId = 1
             };
             context.Products.Add(caesar);
             await context.SaveChangesAsync();
             var ingredients = await context.Ingredients.ToListAsync();
-            foreach(var ingredient in ingredients)
+            foreach (var ingredient in ingredients)
             {
                 var productIngredient = new ProductIngredientEntity
                 {
@@ -207,7 +207,7 @@ public static class DbSeeder
                     };
                     context.ProductImages.Add(productImage);
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     Console.WriteLine("Error Json Parse Data for PRODUCT IMAGE", ex.Message);
                 }

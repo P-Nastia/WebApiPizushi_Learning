@@ -61,6 +61,10 @@ namespace Core.Services
             }
             if (product.ProductImages != null)
             {
+                foreach(var image in product.ProductImages)
+                {
+                    await imageService.DeleteImageAsync(image.Name);
+                }
                 context.ProductImages.RemoveRange(product!.ProductImages);
             }
             context.Products.Remove(product);
