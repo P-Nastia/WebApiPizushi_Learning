@@ -75,10 +75,20 @@ namespace Core.Services
         public async Task<ProductItemModel> Edit(ProductEditModel model)
         {
             var entity = await context.Products.Where(x => x.Id == model.Id)
+                .FirstOrDefaultAsync();
+            var item = await context.Products
+                .Where(x => x.Id == model.Id)
                 .ProjectTo<ProductItemModel>(mapper.ConfigurationProvider)
                 .FirstOrDefaultAsync();
 
-            var imgDelete = entity.ProductImages
+            entity.Name = model.Name;
+            entity.Price = model.Price;
+            entity.Slug = model.Slug;
+            entity.Weight = model.Weight;
+            entity.CategoryId = model.CategoryId;
+            entity.ProductSizeId = model.ProductSizeId;
+
+            var imgDelete = item.ProductImages
                 .Where(x => !model.ImageFiles!.Any(y => y.FileName == x.Name))
                 .ToList();
 
@@ -119,9 +129,23 @@ namespace Core.Services
                 }
                 p++;
             }
-
             await context.SaveChangesAsync();
-            return entity;
+
+            var ingr = await context.ProductIngredients.Where(x => x.ProductId == model.Id).ToListAsync();
+            context.ProductIngredients.RemoveRange(ingr);
+
+            foreach (var ingId in model.IngredientIds!)
+            {
+                var productIngredient = new ProductIngredientEntity
+                {
+                    ProductId = entity.Id,
+                    IngredientId = ingId
+                };
+                context.ProductIngredients.Add(productIngredient);
+            }
+            await context.SaveChangesAsync();
+
+            return item;
         }
 
         public async Task<ProductItemModel> GetById(int id)

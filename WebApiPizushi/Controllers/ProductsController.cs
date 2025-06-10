@@ -90,15 +90,10 @@ namespace WebApiPizushi.Controllers
         [HttpPut("edit")]
         public async Task<IActionResult> Edit([FromForm] ProductEditModel model)
         {
-
-            if (model.ImageFiles == null)
-                return BadRequest("Image files are empty!");
-            if (model.IngredientIds == null)
-                return BadRequest("Product ingredients are empty!");
             var entity = await productService.Edit(model);
             if (entity != null)
                 return Ok(model);
-            else return BadRequest("Error create product!");
+            else return BadRequest("Error edit product!");
         }
     }
 }
