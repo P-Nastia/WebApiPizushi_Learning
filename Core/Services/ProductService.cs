@@ -179,23 +179,14 @@ namespace Core.Services
             return await context.Products.ProjectTo<ProductItemModel>(mapper.ConfigurationProvider).ToListAsync();
         }
 
-        public async Task<List<ProductIngredientModel>> UploadIngredients(CreateIngredientsModel model)
+        public async Task<ProductIngredientModel> UploadIngredient(CreateIngredientModel model)
         {
-            List<ProductIngredientModel> ingredients = new();
-            foreach(var ingredient in model.Ingredients!)
-            {
-                var entity = mapper.Map<IngredientEntity>(ingredient);
-                entity.Image = await imageService.SaveImageAsync(ingredient.ImageFile!);
-                context.Ingredients.Add(entity);
-                await context.SaveChangesAsync();
-                ingredients.Add(new ProductIngredientModel
-                {
-                    Id = entity.Id,
-                    Name = entity.Name,
-                    Image = entity.Image
-                });
-            }
-            return ingredients;
+            var entity = mapper.Map<IngredientEntity>(model);
+            entity.Image = await imageService.SaveImageAsync(model.ImageFile!);
+            context.Ingredients.Add(entity);
+            await context.SaveChangesAsync();
+            
+            return mapper.Map<ProductIngredientModel>(entity);
         }
     }
 }

@@ -34,25 +34,12 @@ namespace WebApiPizushi.Controllers
             return Ok(model);
         }
         [HttpPost("ingredients")]
-        public async Task<IActionResult> CreateIngredients([FromForm] List<string> names, [FromForm] List<IFormFile> files)
+        public async Task<IActionResult> CreateIngredient([FromForm] CreateIngredientModel model)
         {
-            if (names.Count != files.Count)
-                return BadRequest("Number of images and ingredients` names isn`t the same!");
-            CreateIngredientsModel model = new();
-            
-            for(int i = 0; i < names.Count; i++)
-            {
-                model.Ingredients.Add(new CreateIngredientModel
-                {
-                    Name = names[i],
-                    ImageFile = files[i]
-                });
-            }
-            var ingredients = await productService.UploadIngredients(model);
-            if (ingredients != null)
-                return Ok(ingredients);
-            else
-                return BadRequest();
+            var ingredient = await productService.UploadIngredient(model);
+            if (ingredient != null)
+                return Ok(ingredient);
+            return BadRequest();
         }
         [HttpPost("create")]
         public async Task<IActionResult> Create([FromForm] ProductCreateModel model)
