@@ -53,22 +53,8 @@ namespace Core.Services
         public async Task Delete(ProductDeleteModel model)
         {
             var product = await context.Products.Where(x => x.Id == model.Id)
-                .Include(x=>x.ProductIngredients)
-                .Include(x=>x.ProductImages)
                 .FirstOrDefaultAsync();
-            if (product!.ProductIngredients != null)
-            {
-                context.ProductIngredients.RemoveRange(product.ProductIngredients);
-            }
-            if (product.ProductImages != null)
-            {
-                foreach(var image in product.ProductImages)
-                {
-                    await imageService.DeleteImageAsync(image.Name);
-                }
-                context.ProductImages.RemoveRange(product!.ProductImages);
-            }
-            context.Products.Remove(product);
+            product.IsDeleted = true;
             await context.SaveChangesAsync();
         }
 
@@ -76,17 +62,13 @@ namespace Core.Services
         {
             var entity = await context.Products.Where(x => x.Id == model.Id)
                 .FirstOrDefaultAsync();
+
             var item = await context.Products
                 .Where(x => x.Id == model.Id)
                 .ProjectTo<ProductItemModel>(mapper.ConfigurationProvider)
                 .FirstOrDefaultAsync();
 
-            entity.Name = model.Name;
-            entity.Price = model.Price;
-            entity.Slug = model.Slug;
-            entity.Weight = model.Weight;
-            entity.CategoryId = model.CategoryId;
-            entity.ProductSizeId = model.ProductSizeId;
+            mapper.Map(model, entity);
 
             var imgDelete = item.ProductImages
                 .Where(x => !model.ImageFiles!.Any(y => y.FileName == x.Name))
@@ -176,7 +158,7 @@ namespace Core.Services
 
         public async Task<List<ProductItemModel>> List()
         {
-            return await context.Products.ProjectTo<ProductItemModel>(mapper.ConfigurationProvider).ToListAsync();
+            return await context.Products.Where(x=>!x.IsDeleted).ProjectTo<ProductItemModel>(mapper.ConfigurationProvider).ToListAsync();
         }
 
         public async Task<ProductIngredientModel> UploadIngredient(CreateIngredientModel model)

@@ -16,5 +16,11 @@ public class ProductMapper : Profile
         CreateMap<ProductCreateModel, ProductEntity>()
             .ForMember(x => x.ProductImages, opt => opt.Ignore())
             .ForMember(x => x.ProductIngredients, opt => opt.Ignore());
+        CreateMap<ProductEditModel, ProductEntity>()
+            .ForMember(x => x.ProductImages, opt => opt.Ignore())
+            .ForMember(x => x.ProductIngredients, opt => opt.Ignore())
+            .ForMember(x => x.Id, opt => opt.Ignore())
+            .ForMember(x => x.Category, opt => opt.Ignore())
+            .ForMember(x => x.ProductSize, opt => opt.Ignore());
     }
 }

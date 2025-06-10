@@ -2,7 +2,6 @@
 using Domain.Entities;
 using Core.Models.Seeder;
 using Core.Models.Product.Ingredient;
-using Core.Models.Product;
 
 namespace Core.Mapper;
 
