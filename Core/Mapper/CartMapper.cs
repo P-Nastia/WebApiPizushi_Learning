@@ -4,9 +4,9 @@ using Domain.Entities;
 
 namespace Core.Mapper;
 
-public class ImageMapper : Profile
+public class CartMapper : Profile
 {
-    public ImageMapper()
+    public CartMapper()
     {
         CreateMap<ProductImageEntity, ProductImageModel>();
     }
