@@ -7,10 +7,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Core.Services;
 
-public class CartService(AppDbContext context) : ICartService
+public class CartService(AppDbContext context,IAuthService authService) : ICartService
 {
-    public async Task<long> CreateUpdate(CartCreateUpdateModel model, long userId)
+    public async Task CreateUpdate(CartCreateUpdateModel model)
     {
+        var userId = await authService.GetUserId();
         var entity = await context.Carts
             .SingleOrDefaultAsync(x => x.UserId == userId && x.ProductId == model.ProductId);
         if (entity != null)
@@ -25,9 +26,8 @@ public class CartService(AppDbContext context) : ICartService
                 ProductId = model.ProductId,
                 Quantity = model.Quantity
             };
+            await context.Carts.AddAsync(entity);
         }
-        context.Carts.Update(entity);
         await context.SaveChangesAsync();
-        return entity.ProductId;
     }
 }

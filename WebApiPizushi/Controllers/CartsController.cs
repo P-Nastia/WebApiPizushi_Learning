@@ -13,9 +13,9 @@ namespace WebApiPizushi.Controllers;
 public class CartsController(ICartService cartService) : ControllerBase
 {
     [HttpPost]
-    public IActionResult CreateUpdate([FromBody] CartCreateUpdateModel model)
+    public async Task<IActionResult> CreateUpdate([FromBody] CartCreateUpdateModel model)
     {
-        var email = User.Claims.First().Value; // з JWt-Token
+        await cartService.CreateUpdate(model);
         return Ok(new { message = "Cart updated succesfully" });
     }
 }
