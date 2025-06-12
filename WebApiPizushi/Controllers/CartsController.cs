@@ -18,4 +18,10 @@ public class CartsController(ICartService cartService) : ControllerBase
         await cartService.CreateUpdate(model);
         return Ok(new { message = "Cart updated succesfully" });
     }
+    [HttpGet]
+    public async Task<IActionResult> GetItems()
+    {
+        var model = await cartService.GetCartItems();
+        return Ok(model);
+    }
 }

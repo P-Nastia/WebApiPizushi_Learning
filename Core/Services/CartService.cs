@@ -1,4 +1,6 @@
 ﻿
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Core.Interfaces;
 using Core.Models.Cart;
 using Domain;
@@ -7,7 +9,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Core.Services;
 
-public class CartService(AppDbContext context,IAuthService authService) : ICartService
+public class CartService(AppDbContext context,IAuthService authService,
+    IMapper mapper) : ICartService
 {
     public async Task CreateUpdate(CartCreateUpdateModel model)
     {
@@ -29,5 +32,14 @@ public class CartService(AppDbContext context,IAuthService authService) : ICartS
             await context.Carts.AddAsync(entity);
         }
         await context.SaveChangesAsync();
+    }
+
+    public async Task<List<CartItemModel>> GetCartItems()
+    {
+        var userId = await authService.GetUserId();
+        var items = await context.Carts.Where(x => x.UserId == userId)
+            .ProjectTo<CartItemModel>(mapper.ConfigurationProvider)
+            .ToListAsync();
+        return items;
     }
 }
