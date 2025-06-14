@@ -34,6 +34,17 @@ public class CartService(AppDbContext context,IAuthService authService,
         await context.SaveChangesAsync();
     }
 
+    public async Task Delete(long id)
+    {
+        var userId = await authService.GetUserId();
+        var item = await context.Carts.SingleOrDefaultAsync(x => x.UserId == userId && x.ProductId == id);
+        if (item != null)
+        {
+            context.Carts.Remove(item);
+            await context.SaveChangesAsync();
+        }
+    }
+
     public async Task<List<CartItemModel>> GetCartItems()
     {
         var userId = await authService.GetUserId();
