@@ -215,5 +215,82 @@ public static class DbSeeder
             await context.SaveChangesAsync();
 
         }
+
+        if (!context.OrderStatuses.Any())
+        {
+            List<string> names = new List<string>() {
+                "Нове", "Очікує оплати", "Оплачено",
+                "В обробці", "Готується до відправки",
+                "Відправлено", "У дорозі", "Доставлено",
+                "Завершено", "Скасовано (вручну)", "Скасовано (автоматично)",
+                "Повернення", "В обробці повернення" };
+
+            var orderStatuses = names.Select(name => new OrderStatusEntity { Name = name }).ToList();
+
+            await context.OrderStatuses.AddRangeAsync(orderStatuses);
+            await context.SaveChangesAsync();
+        }
+
+        if (!context.Orders.Any())
+        {
+            List<OrderEntity> orders = new List<OrderEntity>
+            {
+                new OrderEntity
+                {
+                    UserId = 1,
+                    OrderStatusId = 1,
+                },
+                new OrderEntity
+                {
+                    UserId = 1,
+                    OrderStatusId = 10,
+                },
+                new OrderEntity
+                {
+                    UserId = 1,
+                    OrderStatusId = 9,
+                },
+            };
+
+            context.Orders.AddRange(orders);
+            await context.SaveChangesAsync();
+        }
+
+        if (!context.OrderItems.Any())
+        {
+            var products = await context.Products.ToListAsync();
+            var orders = await context.Orders.ToListAsync();
+            var rand = new Random();
+
+            foreach (var order in orders)
+            {
+                var existing = await context.OrderItems
+                    .Where(x => x.OrderId == order.Id)
+                    .ToListAsync();
+
+                if (existing.Count > 0) continue;
+
+                var productCount = rand.Next(1, Math.Min(5, products.Count + 1));
+
+                var selectedProducts = products
+                    .Where(p => p.Id != 1)
+                    .OrderBy(_ => rand.Next())
+                    .Take(productCount)
+                    .ToList();
+
+
+                var orderItems = selectedProducts.Select(product => new OrderItemEntity
+                {
+                    OrderId = order.Id,
+                    ProductId = product.Id,
+                    PriceBuy = product.Price,
+                    Count = rand.Next(1, 5),
+                }).ToList();
+
+                context.OrderItems.AddRange(orderItems);
+            }
+
+            await context.SaveChangesAsync();
+        }
     }
 }
