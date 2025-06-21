@@ -28,13 +28,7 @@ namespace Core.Services
         public async Task Delete(CategoryDeleteModel model)
         {
             var entity = await context.Categories.SingleOrDefaultAsync(x => x.Id == model.Id);
-
-            if (!string.IsNullOrEmpty(entity.Image))
-            {
-                await imageService.DeleteImageAsync(entity.Image);
-            }
-
-            context.Categories.Remove(entity);
+            entity!.IsDeleted = true;
             await context.SaveChangesAsync();
         }
 
@@ -64,7 +58,7 @@ namespace Core.Services
 
         public async Task<List<CategoryItemModel>> List()
         {
-            var model = await mapper.ProjectTo<CategoryItemModel>(context.Categories.OrderBy(x => x.Id)).ToListAsync();
+            var model = await mapper.ProjectTo<CategoryItemModel>(context.Categories.Where(x=>x.IsDeleted == false).OrderBy(x => x.Id)).ToListAsync();
             return model;
         }
     }
