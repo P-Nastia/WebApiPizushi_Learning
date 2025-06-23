@@ -25,9 +25,9 @@ namespace Core.Services
             return item;
         }
 
-        public async Task Delete(CategoryDeleteModel model)
+        public async Task Delete(long id)
         {
-            var entity = await context.Categories.SingleOrDefaultAsync(x => x.Id == model.Id);
+            var entity = await context.Categories.SingleOrDefaultAsync(x => x.Id == id);
             entity!.IsDeleted = true;
             await context.SaveChangesAsync();
         }

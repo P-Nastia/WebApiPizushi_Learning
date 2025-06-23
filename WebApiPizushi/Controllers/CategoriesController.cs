@@ -48,10 +48,10 @@ public class CategoriesController(ICategoryService categoryService) : Controller
 
         return Ok(category);
     }
-    [HttpDelete("delete")]
-    public async Task<IActionResult> Delete(CategoryDeleteModel model)
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Delete(long id)
     {
-        await categoryService.Delete(model);
+        await categoryService.Delete(id);
         return Ok();
     }
 }
