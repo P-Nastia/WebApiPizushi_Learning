@@ -16,7 +16,8 @@ namespace WebApiPizushi.Controllers
     [ApiController]
     public class AccountController(IJwtTokenService jwtTokenService,
         UserManager<UserEntity> userManager,
-        IImageService imageService, IMapper mapper) : ControllerBase
+        IImageService imageService, IMapper mapper,
+        IAccountService accountService) : ControllerBase
     {
         [HttpPost]
         public async Task<IActionResult> Login([FromBody] LoginModel model)
@@ -55,6 +56,25 @@ namespace WebApiPizushi.Controllers
                 });
             }
 
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> GoogleLogin([FromBody] GoogleLoginRequestModel model)
+        {
+            string result = await accountService.LoginByGoogle(model.Token);
+            if (string.IsNullOrEmpty(result))
+            {
+                return BadRequest(new
+                {
+                    Status = 400,
+                    IsValid = false,
+                    Errors = new { Email = "Помилка реєстрації" }
+                });
+            }
+            return Ok(new
+            {
+                Token = result
+            });
         }
     }
 }
