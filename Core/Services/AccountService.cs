@@ -37,6 +37,12 @@ public class AccountService(IJwtTokenService tokenService,
         var existingUser = await userManager.FindByEmailAsync(googleUser!.Email);
         if (existingUser != null)
         {
+            var userLoginGoogle = await userManager.FindByLoginAsync("Google", googleUser.GoogleId);
+
+            if (userLoginGoogle == null)
+            {
+                await userManager.AddLoginAsync(existingUser, new UserLoginInfo("Google", googleUser.GoogleId, "Google"));
+            }
             var jwtToken = await tokenService.CreateTokenAsync(existingUser);
             return jwtToken;
         }
@@ -52,6 +58,12 @@ public class AccountService(IJwtTokenService tokenService,
             var result = await userManager.CreateAsync(user);
             if (result.Succeeded)
             {
+                result = await userManager.AddLoginAsync(user, new UserLoginInfo(
+                    loginProvider: "Google",
+                    providerKey: googleUser.GoogleId,
+                    displayName: "Google"
+                    ));
+
                 await userManager.AddToRoleAsync(user, "User");
                 var jwtToken = await tokenService.CreateTokenAsync(user);
                 return jwtToken;
