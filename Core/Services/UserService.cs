@@ -61,12 +61,7 @@ public class UserService(UserManager<UserEntity> userManager,
     {
         var query = userManager.Users.ProjectTo<AdminUserItemModel>(mapper.ConfigurationProvider);
 
-        var total = await query.CountAsync();
-
-        var users = await query
-            .Skip((searchParams.PaginationRequest.CurrentPage - 1) * searchParams.PaginationRequest.ItemsPerPage)
-            .Take(searchParams.PaginationRequest.ItemsPerPage)
-            .ToListAsync();
+        var users = await query.ToListAsync();
 
         if (!String.IsNullOrEmpty(searchParams.Name) && !String.IsNullOrWhiteSpace(searchParams.Name))
         {
@@ -86,13 +81,20 @@ public class UserService(UserManager<UserEntity> userManager,
             ).ToList();
         }
 
+        int total = users.Count;
+
+        users =  users
+            .Skip((searchParams.PaginationRequest.CurrentPage - 1) * searchParams.PaginationRequest.ItemsPerPage)
+            .Take(searchParams.PaginationRequest.ItemsPerPage)
+            .ToList();
+
         return new UsersSearchResponseModel
         {
             Users = users,
             Pagination = new PaginationResponseModel
             {
                 CurrentPage = searchParams.PaginationRequest.CurrentPage,
-                TotalAmount = query.Count()
+                TotalAmount = total
             }
         };
     }
