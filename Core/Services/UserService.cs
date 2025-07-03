@@ -76,11 +76,10 @@ public class UserService(UserManager<UserEntity> userManager,
         {
             users = users.Where(x => x.Email.Contains(searchParams.Email)).ToList();
         }
-        
 
         users = await GetRolesLogins(users);
 
-        if (searchParams.Roles.Count > 0)
+        if (searchParams?.Roles.Count > 0)
         {
             users = users.Where(user =>
                 searchParams.Roles.Any(role => user.Roles.Contains(role))
