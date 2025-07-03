@@ -1,4 +1,8 @@
-﻿using Core.Interfaces;
+﻿using AutoMapper;
+using Core.Interfaces;
+using Core.Models.AdminUser;
+using Core.Models.Search;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApiPizushi.Controllers;
@@ -13,5 +17,12 @@ public class UsersController(IUserService userService) : Controller
         var model = await userService.GetAllUsersAsync();
 
         return Ok(model);
+    }
+    [HttpPost("search")]
+    public async Task<UsersSearchResponseModel> GetUsersSearchAsync(PaginationRequestModel pagination)
+    {
+        var model = await userService.GetSearchUsersAsync(pagination);
+
+        return model;
     }
 }
