@@ -7,5 +7,5 @@ namespace Core.Interfaces;
 public interface IUserService
 {
     Task<List<AdminUserItemModel>> GetAllUsersAsync();
-    Task<UsersSearchResponseModel> GetSearchUsersAsync(PaginationRequestModel pagination);
+    Task<UsersSearchResponseModel> GetSearchUsersAsync(UsersSearchParams searchParams);
 }

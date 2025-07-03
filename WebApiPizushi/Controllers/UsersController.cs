@@ -19,9 +19,9 @@ public class UsersController(IUserService userService) : Controller
         return Ok(model);
     }
     [HttpPost("search")]
-    public async Task<UsersSearchResponseModel> GetUsersSearchAsync(PaginationRequestModel pagination)
+    public async Task<UsersSearchResponseModel> GetUsersSearchAsync(UsersSearchParams searchParams)
     {
-        var model = await userService.GetSearchUsersAsync(pagination);
+        var model = await userService.GetSearchUsersAsync(searchParams);
 
         return model;
     }

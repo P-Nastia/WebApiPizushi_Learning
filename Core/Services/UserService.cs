@@ -57,27 +57,42 @@ public class UserService(UserManager<UserEntity> userManager,
         return users;
     }
 
-    public async Task<UsersSearchResponseModel> GetSearchUsersAsync(PaginationRequestModel pagination)
+    public async Task<UsersSearchResponseModel> GetSearchUsersAsync(UsersSearchParams searchParams)
     {
         var query = userManager.Users.ProjectTo<AdminUserItemModel>(mapper.ConfigurationProvider);
 
         var total = await query.CountAsync();
 
         var users = await query
-            .Skip((pagination.CurrentPage - 1) * pagination.ItemsPerPage)
-            .Take(pagination.ItemsPerPage)
+            .Skip((searchParams.PaginationRequest.CurrentPage - 1) * searchParams.PaginationRequest.ItemsPerPage)
+            .Take(searchParams.PaginationRequest.ItemsPerPage)
             .ToListAsync();
 
-        var userIds = users.Select(u => u.Id).ToList();
+        if (!String.IsNullOrEmpty(searchParams.Name) && !String.IsNullOrWhiteSpace(searchParams.Name))
+        {
+            users = users.Where(x => x.FullName.ToLower().Contains(searchParams.Name.ToLower())).ToList();
+        }
+        if (!String.IsNullOrEmpty(searchParams.Email) && !String.IsNullOrWhiteSpace(searchParams.Email))
+        {
+            users = users.Where(x => x.Email.Contains(searchParams.Email)).ToList();
+        }
+        
 
         users = await GetRolesLogins(users);
+
+        if (searchParams.Roles.Count > 0)
+        {
+            users = users.Where(user =>
+                searchParams.Roles.Any(role => user.Roles.Contains(role))
+            ).ToList();
+        }
 
         return new UsersSearchResponseModel
         {
             Users = users,
             Pagination = new PaginationResponseModel
             {
-                CurrentPage = pagination.CurrentPage,
+                CurrentPage = searchParams.PaginationRequest.CurrentPage,
                 TotalAmount = query.Count()
             }
         };
