@@ -29,38 +29,6 @@ public class UserService(UserManager<UserEntity> userManager,
             .ProjectTo<AdminUserItemModel>(mapper.ConfigurationProvider)
             .ToListAsync();
 
-        users = await GetRolesLogins(users);
-        return users;
-    }
-
-    private async Task<List<AdminUserItemModel>> GetRolesLogins(List<AdminUserItemModel> users)
-    {
-        await context.UserLogins.ForEachAsync(login =>
-        {
-            var user = users.FirstOrDefault(u => u.Id == login.UserId);
-            if (user != null)
-            {
-                user.LoginTypes.Add(login.LoginProvider);
-            }
-        });
-
-        var roleUsers = await userManager.Users.AsNoTracking().ToListAsync();
-
-        foreach (var roleUser in roleUsers)
-        {
-            var adminUser = users.FirstOrDefault(u => u.Id == roleUser.Id);
-            if (adminUser != null)
-            {
-                var roles = await userManager.GetRolesAsync(roleUser);
-                adminUser.Roles = roles.ToList();
-
-                if (!string.IsNullOrEmpty(roleUser.PasswordHash))
-                {
-                    adminUser.LoginTypes.Add("Password");
-                }
-            }
-        }
-
         return users;
     }
 
@@ -79,8 +47,6 @@ public class UserService(UserManager<UserEntity> userManager,
             users = users.Where(x => x.Email.Contains(searchParams.Email)).ToList();
         }
 
-        users = await GetRolesLogins(users);
-
         if (searchParams?.StartDate != null)
         {
             query = query.Where(u => u.DateCreated >= searchParams.StartDate);
@@ -97,6 +63,7 @@ public class UserService(UserManager<UserEntity> userManager,
                 searchParams.Roles.Any(role => user.Roles.Contains(role))
             ).ToList();
         }
+
 
         int total = users.Count;
 
