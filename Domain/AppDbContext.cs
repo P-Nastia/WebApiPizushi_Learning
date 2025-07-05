@@ -2,10 +2,13 @@
 using Microsoft.EntityFrameworkCore;
 using Domain.Entities;
 using Domain.Entities.Identity;
+using Microsoft.AspNetCore.Identity;
 
 namespace Domain;
 
-public class AppDbContext : IdentityDbContext<UserEntity, RoleEntity, long>
+public class AppDbContext : IdentityDbContext<UserEntity, RoleEntity, long,
+    IdentityUserClaim<long>, UserRoleEntity, UserLoginEntity,
+    IdentityRoleClaim<long>, IdentityUserToken<long>>
 {
     public AppDbContext(DbContextOptions<AppDbContext> opt) : base(opt) { }
     public DbSet<CategoryEntity> Categories { get; set; }
@@ -32,6 +35,14 @@ public class AppDbContext : IdentityDbContext<UserEntity, RoleEntity, long>
             ur.HasOne(ur => ur.User)
                 .WithMany(r => r.UserRoles)
                 .HasForeignKey(u => u.UserId)
+                .IsRequired();
+        });
+
+        builder.Entity<UserLoginEntity>(b =>
+        {
+            b.HasOne(l => l.User)
+                .WithMany(u => u.UserLogins)
+                .HasForeignKey(l => l.UserId)
                 .IsRequired();
         });
 

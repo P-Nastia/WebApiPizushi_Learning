@@ -37,7 +37,7 @@ namespace Domain.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Carts");
+                    b.ToTable("Carts", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.CategoryEntity", b =>
@@ -71,7 +71,7 @@ namespace Domain.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("tblCategories");
+                    b.ToTable("tblCategories", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.Identity.ProductIngredientEntity", b =>
@@ -86,7 +86,7 @@ namespace Domain.Migrations
 
                     b.HasIndex("IngredientId");
 
-                    b.ToTable("tblProductIngredients");
+                    b.ToTable("tblProductIngredients", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.Identity.RoleEntity", b =>
@@ -223,7 +223,7 @@ namespace Domain.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("tblIngredients");
+                    b.ToTable("tblIngredients", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.OrderEntity", b =>
@@ -252,7 +252,7 @@ namespace Domain.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("tblOrders");
+                    b.ToTable("tblOrders", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.OrderItemEntity", b =>
@@ -287,7 +287,7 @@ namespace Domain.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("tblOrderItems");
+                    b.ToTable("tblOrderItems", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.OrderStatusEntity", b =>
@@ -311,7 +311,7 @@ namespace Domain.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("tblOrderStatuses");
+                    b.ToTable("tblOrderStatuses", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.ProductEntity", b =>
@@ -356,7 +356,7 @@ namespace Domain.Migrations
 
                     b.HasIndex("ProductSizeId");
 
-                    b.ToTable("tblProducts");
+                    b.ToTable("tblProducts", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.ProductImageEntity", b =>
@@ -388,7 +388,7 @@ namespace Domain.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("tblProductImages");
+                    b.ToTable("tblProductImages", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.ProductSizeEntity", b =>
@@ -412,7 +412,7 @@ namespace Domain.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("tblProductSizes");
+                    b.ToTable("tblProductSizes", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<long>", b =>

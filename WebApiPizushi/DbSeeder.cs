@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
-using WebApiPizushi.Constants;
+using Core.Constants;
 using Domain;
 using Domain.Entities;
 using Domain.Entities.Identity;
@@ -165,56 +165,56 @@ public static class DbSeeder
             }
         }
 
-     //   if (!context.Products.Any())
-     //   {
-     //       var caesar = new ProductEntity
-     //       {
-     //           Name = "Цезаре",
-     //           Slug = "caesar",
-     //           Price = 195,
-     //           Weight = 540,
-     //           CategoryId = 18,
-     //           ProductSizeId = 1
-     //       };
-     //       context.Products.Add(caesar);
-     //       await context.SaveChangesAsync();
-     //       var ingredients = await context.Ingredients.ToListAsync();
-     //       foreach (var ingredient in ingredients)
-     //       {
-     //           var productIngredient = new ProductIngredientEntity
-     //           {
-     //               ProductId = caesar.Id,
-     //               IngredientId = ingredient.Id
-     //           };
-     //           context.ProductIngredients.Add(productIngredient);
-     //       }
-     //       await context.SaveChangesAsync();
+        if (!context.Products.Any())
+        {
+            var caesar = new ProductEntity
+            {
+                Name = "Цезаре",
+                Slug = "caesar",
+                Price = 195,
+                Weight = 540,
+                CategoryId = 1,
+                ProductSizeId = 1
+            };
+            await context.Products.AddAsync(caesar);
+            await context.SaveChangesAsync();
+            var ingredients = await context.Ingredients.ToListAsync();
+            foreach (var ingredient in ingredients)
+            {
+                var productIngredient = new ProductIngredientEntity
+                {
+                    ProductId = caesar.Id,
+                    IngredientId = ingredient.Id
+                };
+                context.ProductIngredients.Add(productIngredient);
+            }
+            await context.SaveChangesAsync();
 
-     //       string[] images = {
-     //    "https://emeals-menubuilder.s3.amazonaws.com/v1/recipes/653321/pictures/large_chicken-caesar-pizza.jpg",
-     //    "https://cdn.lifehacker.ru/wp-content/uploads/2022/03/11187_1522960128.7729_1646727034-1170x585.jpg",
-     //    "https://i.obozrevatel.com/food/recipemain/2020/2/5/zhenygohvrxm865gbgzsoxnru3mxjfhwwjd4bmvp.jpeg?size=636x424"
-     //};
+            string[] images = {
+            "https://emeals-menubuilder.s3.amazonaws.com/v1/recipes/653321/pictures/large_chicken-caesar-pizza.jpg",
+            "https://cdn.lifehacker.ru/wp-content/uploads/2022/03/11187_1522960128.7729_1646727034-1170x585.jpg",
+            "https://i.obozrevatel.com/food/recipemain/2020/2/5/zhenygohvrxm865gbgzsoxnru3mxjfhwwjd4bmvp.jpeg?size=636x424"
+        };
 
-     //       foreach (var imageUrl in images)
-     //       {
-     //           try
-     //           {
-     //               var productImage = new ProductImageEntity
-     //               {
-     //                   ProductId = caesar.Id,
-     //                   Name = await imageService.SaveImageFromUrlAsync(imageUrl)
-     //               };
-     //               context.ProductImages.Add(productImage);
-     //           }
-     //           catch (Exception ex)
-     //           {
-     //               Console.WriteLine("Error Json Parse Data for PRODUCT IMAGE", ex.Message);
-     //           }
-     //       }
-     //       await context.SaveChangesAsync();
+            foreach (var imageUrl in images)
+            {
+                try
+                {
+                    var productImage = new ProductImageEntity
+                    {
+                        ProductId = caesar.Id,
+                        Name = await imageService.SaveImageFromUrlAsync(imageUrl)
+                    };
+                    context.ProductImages.Add(productImage);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Error Json Parse Data for PRODUCT IMAGE", ex.Message);
+                }
+            }
+            await context.SaveChangesAsync();
 
-     //   }
+        }
 
         if (!context.OrderStatuses.Any())
         {
@@ -231,66 +231,66 @@ public static class DbSeeder
             await context.SaveChangesAsync();
         }
 
-        //if (!context.Orders.Any())
-        //{
-        //    List<OrderEntity> orders = new List<OrderEntity>
-        //    {
-        //        new OrderEntity
-        //        {
-        //            UserId = 1,
-        //            OrderStatusId = 1,
-        //        },
-        //        new OrderEntity
-        //        {
-        //            UserId = 1,
-        //            OrderStatusId = 10,
-        //        },
-        //        new OrderEntity
-        //        {
-        //            UserId = 1,
-        //            OrderStatusId = 9,
-        //        },
-        //    };
+        if (!context.Orders.Any())
+        {
+            List<OrderEntity> orders = new List<OrderEntity>
+            {
+                new OrderEntity
+                {
+                    UserId = 1,
+                    OrderStatusId = 1,
+                },
+                new OrderEntity
+                {
+                    UserId = 1,
+                    OrderStatusId = 10,
+                },
+                new OrderEntity
+                {
+                    UserId = 1,
+                    OrderStatusId = 9,
+                },
+            };
 
-        //    context.Orders.AddRange(orders);
-        //    await context.SaveChangesAsync();
-        //}
+            context.Orders.AddRange(orders);
+            await context.SaveChangesAsync();
+        }
 
-        //if (!context.OrderItems.Any())
-        //{
-        //    var products = await context.Products.ToListAsync();
-        //    var orders = await context.Orders.ToListAsync();
-        //    var rand = new Random();
+        if (!context.OrderItems.Any())
+        {
+            var products = await context.Products.ToListAsync();
+            var orders = await context.Orders.ToListAsync();
+            var rand = new Random();
 
-        //    foreach (var order in orders)
-        //    {
-        //        var existing = await context.OrderItems
-        //            .Where(x => x.OrderId == order.Id)
-        //            .ToListAsync();
+            foreach (var order in orders)
+            {
+                var existing = await context.OrderItems
+                    .Where(x => x.OrderId == order.Id)
+                    .ToListAsync();
 
-        //        if (existing.Count > 0) continue;
+                if (existing.Count > 0) continue;
 
-        //        var productCount = rand.Next(1, Math.Min(5, products.Count + 1));
+                var productCount = rand.Next(1, Math.Min(5, products.Count + 1));
 
-        //        var selectedProducts = products
-        //            .Where(p => p.Id != 1)
-        //            .OrderBy(_ => rand.Next())
-        //            .Take(productCount)
-        //            .ToList();
+                var selectedProducts = products
+                    .Where(p => p.Id != 1)
+                    .OrderBy(_ => rand.Next())
+                    .Take(productCount)
+                    .ToList();
 
 
-        //        var orderItems = selectedProducts.Select(product => new OrderItemEntity
-        //        {
-        //            OrderId = order.Id,
-        //            ProductId = product.Id,
-        //            PriceBuy = product.Price,
-        //            Count = rand.Next(1, 5),
-        //        }).ToList();
+                var orderItems = selectedProducts.Select(product => new OrderItemEntity
+                {
+                    OrderId = order.Id,
+                    ProductId = product.Id,
+                    PriceBuy = product.Price,
+                    Count = rand.Next(1, 5),
+                }).ToList();
 
-        //        context.OrderItems.AddRange(orderItems);
-        //    }
+                context.OrderItems.AddRange(orderItems);
+            }
 
-        //    await context.SaveChangesAsync();
-        //}
+            await context.SaveChangesAsync();
+        }
     }
 }

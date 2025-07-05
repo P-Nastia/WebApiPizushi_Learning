@@ -3,7 +3,7 @@ using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using WebApiPizushi.Constants;
+using Core.Constants;
 using Domain;
 using Domain.Entities;
 using Core.Interfaces;

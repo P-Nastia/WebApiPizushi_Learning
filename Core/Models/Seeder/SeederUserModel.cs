@@ -1,7 +1,10 @@
-﻿namespace Core.Models.Seeder;
+﻿using static Bogus.DataSets.Name;
+
+namespace Core.Models.Seeder;
 
 public class SeederUserModel
 {
+    public Gender Gender { get; set; }
     public string Email { get; set; } = "";
     public string FirstName { get; set; } = "";
     public string LastName { get; set; } = "";

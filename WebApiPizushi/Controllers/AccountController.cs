@@ -3,7 +3,7 @@ using MailKit;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using WebApiPizushi.Constants;
+using Core.Constants;
 using Domain.Entities;
 using Domain.Entities.Identity;
 using Core.Interfaces;
