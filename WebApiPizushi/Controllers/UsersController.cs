@@ -43,4 +43,22 @@ public class UsersController(IUserService userService) : Controller
 
         return Ok(result);
     }
+
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetById(int id)
+    {
+        var result = await userService.GetByIdAsync(id);
+        if (result == null)
+            return NotFound(result);
+
+        return Ok(result);
+    }
+    [HttpPut("edit")]
+    public async Task<IActionResult> EditUser([FromForm] AdminUserEditItemModel model)
+    {
+        var result = await userService.EditAsync(model);
+        if (result == null)
+            return BadRequest(result);
+        return Ok(result);
+    }
 }

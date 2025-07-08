@@ -10,4 +10,6 @@ public interface IUserService
     Task<List<AdminUserItemModel>> GetAllUsersAsync();
     Task<UsersSearchResponseModel> GetSearchUsersAsync(UsersSearchParams searchParams);
     Task<string> SeedAsync(SeedItemsModel model);
+    Task<AdminUserItemModel> GetByIdAsync(int id);
+    Task<AdminUserItemModel> EditAsync(AdminUserEditItemModel model);
 }

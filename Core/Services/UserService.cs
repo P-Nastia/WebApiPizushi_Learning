@@ -7,8 +7,6 @@ using Core.Models.Search;
 using Core.Models.Seeder;
 using Domain;
 using Domain.Entities.Identity;
-using FluentValidation.Validators;
-using MailKit;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
@@ -23,6 +21,7 @@ public class UserService(UserManager<UserEntity> userManager,
     IImageService imageService,
     RoleManager<RoleEntity> roleManager) : IUserService
 {
+
     public async Task<List<AdminUserItemModel>> GetAllUsersAsync()
     {
         var users = await userManager.Users
@@ -31,7 +30,6 @@ public class UserService(UserManager<UserEntity> userManager,
 
         return users;
     }
-
     public async Task<UsersSearchResponseModel> GetSearchUsersAsync(UsersSearchParams searchParams)
     {
         var query = userManager.Users.ProjectTo<AdminUserItemModel>(mapper.ConfigurationProvider);
@@ -49,12 +47,12 @@ public class UserService(UserManager<UserEntity> userManager,
 
         if (searchParams?.StartDate != null)
         {
-            query = query.Where(u => u.DateCreated >= searchParams.StartDate);
+            users = users.Where(u => u.DateCreated >= searchParams.StartDate).ToList();
         }
 
         if (searchParams?.EndDate != null)
         {
-            query = query.Where(u => u.DateCreated <= searchParams.EndDate);
+            users = users.Where(u => u.DateCreated <= searchParams.EndDate).ToList();
         }
 
         if (searchParams?.Roles.Count > 0)
@@ -141,5 +139,30 @@ public class UserService(UserManager<UserEntity> userManager,
         Console.WriteLine("RunTime " + elapsedTime);
 
         return elapsedTime;
+    }
+
+    public async Task<AdminUserItemModel> GetByIdAsync(int id)
+    {
+        var user = await userManager.Users.Where(x => x.Id == id).ProjectTo<AdminUserItemModel>(mapper.ConfigurationProvider).SingleOrDefaultAsync();
+        return user;
+    }
+    public async Task<AdminUserItemModel> EditAsync(AdminUserEditItemModel model)
+    {
+        var user = await userManager.FindByIdAsync(model.Id.ToString());
+        if(user != null)
+        {
+            user = mapper.Map(model, user);
+            if (model.Roles != null)
+            {
+                var currentRoles = await userManager.GetRolesAsync(user);
+                await userManager.RemoveFromRolesAsync(user, currentRoles);
+                await userManager.AddToRolesAsync(user, model.Roles);
+            }
+
+            await userManager.UpdateAsync(user);
+            var updated = mapper.Map<AdminUserItemModel>(user);
+            return updated;
+        }
+        return null;
     }
 }
