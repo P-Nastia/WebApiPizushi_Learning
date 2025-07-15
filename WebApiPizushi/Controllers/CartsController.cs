@@ -22,8 +22,8 @@ public class CartsController(ICartService cartService, IAuthService authService)
     [HttpGet]
     public async Task<IActionResult> GetItems()
     {
-        var model = await cartService.GetCartItems();
-        var totalPrice = model.Sum(x => x.Price * x.Quantity);
+        var items = await cartService.GetCartItems();
+        var totalPrice = items.Sum(x => x.Price * x.Quantity);
 
         var id = await authService.GetUserId();
 
@@ -31,7 +31,7 @@ public class CartsController(ICartService cartService, IAuthService authService)
         {
             id,
             totalPrice,
-            model
+            items
         });
     }
     [HttpDelete("{id}")]
