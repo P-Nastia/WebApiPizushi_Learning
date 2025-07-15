@@ -27,17 +27,22 @@ public class CartsController(ICartService cartService, IAuthService authService)
 
         var id = await authService.GetUserId();
 
-        return Ok(new
-        {
-            id,
-            totalPrice,
-            items
-        });
+        return Ok(items);
     }
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(long id)
     {
         await cartService.Delete(id);
+        return Ok();
+    }
+    [Authorize]
+    [HttpPost("addRange")]
+    public async Task<IActionResult> AddRange([FromBody] List<CartCreateUpdateModel> modelItems)
+    {
+        foreach(var item in modelItems)
+        {
+            await cartService.CreateUpdate(item);
+        }
         return Ok();
     }
 }
