@@ -3,6 +3,7 @@ using Core.Models.Cart;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Org.BouncyCastle.Utilities;
 using System.Security.Claims;
 
 namespace WebApiPizushi.Controllers;
@@ -10,7 +11,7 @@ namespace WebApiPizushi.Controllers;
 [Route("api/[controller]/[action]")]
 [ApiController]
 [Authorize]
-public class CartsController(ICartService cartService) : ControllerBase
+public class CartsController(ICartService cartService, IAuthService authService) : ControllerBase
 {
     [HttpPost]
     public async Task<IActionResult> CreateUpdate([FromBody] CartCreateUpdateModel model)
@@ -22,7 +23,16 @@ public class CartsController(ICartService cartService) : ControllerBase
     public async Task<IActionResult> GetItems()
     {
         var model = await cartService.GetCartItems();
-        return Ok(model);
+        var totalPrice = model.Sum(x => x.Price * x.Quantity);
+
+        var id = await authService.GetUserId();
+
+        return Ok(new
+        {
+            id,
+            totalPrice,
+            model
+        });
     }
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(long id)
