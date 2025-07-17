@@ -18,11 +18,16 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
+
 builder.Services.AddDbContext<AppDbContext>(opt => opt.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddIdentityConfiguration();
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());// реЇстрац≥€ AutoMapper
+
+
+builder.Services.AddHttpClient();
+
 
 builder.Services.AddScoped<IImageService, ImageService>();
 builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
@@ -34,6 +39,7 @@ builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<ISmtpService, SmtpService>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<INovaPoshtaService, NovaPoshtaService>();
 
 builder.Services.AddHttpContextAccessor(); // дл€ вит€гненн€ юзера, щоб отримати доступ до HttpContext в серв≥сах
 

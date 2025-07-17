@@ -22,6 +22,7 @@ public static class DbSeeder
         var imageService = scope.ServiceProvider.GetRequiredService<IImageService>();
         var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<RoleEntity>>();
         var userManager = scope.ServiceProvider.GetRequiredService<UserManager<UserEntity>>();
+        var novaPoshta = scope.ServiceProvider.GetRequiredService<INovaPoshtaService>();
 
         context.Database.Migrate();
 
@@ -215,6 +216,54 @@ public static class DbSeeder
             }
             await context.SaveChangesAsync();
 
+
+            var caesar1 = new ProductEntity
+            {
+                Name = "Цезаре",
+                Slug = "caesar",
+                Price = 350,
+                Weight = 960,
+                CategoryId = 1,
+                ProductSizeId = 2
+            };
+            await context.Products.AddAsync(caesar1);
+            await context.SaveChangesAsync();
+            var ingredients1 = await context.Ingredients.ToListAsync();
+            foreach (var ingredient in ingredients1)
+            {
+                var productIngredient = new ProductIngredientEntity
+                {
+                    ProductId = caesar1.Id,
+                    IngredientId = ingredient.Id
+                };
+                context.ProductIngredients.Add(productIngredient);
+            }
+            await context.SaveChangesAsync();
+
+            string[] images1 = {
+            "https://emeals-menubuilder.s3.amazonaws.com/v1/recipes/653321/pictures/large_chicken-caesar-pizza.jpg",
+            "https://cdn.lifehacker.ru/wp-content/uploads/2022/03/11187_1522960128.7729_1646727034-1170x585.jpg",
+            "https://i.obozrevatel.com/food/recipemain/2020/2/5/zhenygohvrxm865gbgzsoxnru3mxjfhwwjd4bmvp.jpeg?size=636x424"
+        };
+
+            foreach (var imageUrl in images1)
+            {
+                try
+                {
+                    var productImage = new ProductImageEntity
+                    {
+                        ProductId = caesar1.Id,
+                        Name = await imageService.SaveImageFromUrlAsync(imageUrl)
+                    };
+                    context.ProductImages.Add(productImage);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Error Json Parse Data for PRODUCT IMAGE", ex.Message);
+                }
+            }
+            await context.SaveChangesAsync();
+
         }
 
         if (!context.OrderStatuses.Any())
@@ -294,35 +343,36 @@ public static class DbSeeder
             await context.SaveChangesAsync();
         }
 
-        if (!context.Cities.Any())
-        {
-            var list = new List<CityEntity>
-            {
-                new CityEntity { Name = "Київ" },
-                new CityEntity { Name = "Львів" },
-                new CityEntity { Name = "Одеса" },
-                new CityEntity { Name = "Харків" },
-                new CityEntity { Name = "Дніпро" }
-            };
 
-            await context.Cities.AddRangeAsync(list);
-            await context.SaveChangesAsync();
-        }
+        //if (!context.Cities.Any())
+        //{
+        //    var list = new List<CityEntity>
+        //    {
+        //        new CityEntity { Name = "Київ" },
+        //        new CityEntity { Name = "Львів" },
+        //        new CityEntity { Name = "Одеса" },
+        //        new CityEntity { Name = "Харків" },
+        //        new CityEntity { Name = "Дніпро" }
+        //    };
 
-        if (!context.PostDepartments.Any())
-        {
-            var list = new List<PostDepartmentEntity>
-            {
-                new PostDepartmentEntity { Name = "Відділення №1" },
-                new PostDepartmentEntity { Name = "Відділення №2" },
-                new PostDepartmentEntity { Name = "Відділення №3" },
-                new PostDepartmentEntity { Name = "Відділення №4" },
-                new PostDepartmentEntity { Name = "Відділення №5" }
-            };
+        //    await context.Cities.AddRangeAsync(list);
+        //    await context.SaveChangesAsync();
+        //}
 
-            await context.PostDepartments.AddRangeAsync(list);
-            await context.SaveChangesAsync();
-        }
+        //if (!context.PostDepartments.Any())
+        //{
+        //    var list = new List<PostDepartmentEntity>
+        //    {
+        //        new PostDepartmentEntity { Name = "Відділення №1" },
+        //        new PostDepartmentEntity { Name = "Відділення №2" },
+        //        new PostDepartmentEntity { Name = "Відділення №3" },
+        //        new PostDepartmentEntity { Name = "Відділення №4" },
+        //        new PostDepartmentEntity { Name = "Відділення №5" }
+        //    };
+
+        //    await context.PostDepartments.AddRangeAsync(list);
+        //    await context.SaveChangesAsync();
+        //}
 
         if (!context.PaymentTypes.Any())
         {
@@ -335,5 +385,16 @@ public static class DbSeeder
             await context.PaymentTypes.AddRangeAsync(list);
             await context.SaveChangesAsync();
         }
+
+        //if (!context.Cities.Any())
+        //{
+        //    await novaPoshta.FetchCitiesAsync();
+        //}
+        //Console.WriteLine("SEED CITIES");
+        if (!context.PostDepartments.Any())
+        {
+            await novaPoshta.FetchDepartmentsAsync();
+        }
+        Console.WriteLine("SEED DEPARTMENTS");
     }
 }
