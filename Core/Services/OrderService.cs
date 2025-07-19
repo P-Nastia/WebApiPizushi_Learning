@@ -53,13 +53,39 @@ public class OrderService(IAuthService authService, ISmtpService smtpService, Ap
 
             var price = orderItems.Sum(i => i.Count * i.PriceBuy);
 
+            var productRows = string.Join("", orderItems.Select(item => $@"
+    <tr style='border-bottom: 1px solid #f2f2f2;'>
+        
+        <td style='padding: 10px; font-weight: bold; color: #333;'>{item.Product.Name}</td>
+        <td style='padding: 10px; color: #333;'>{item.PriceBuy:N2} грн</td>
+        <td style='padding: 10px; color: #333;'>{item.Count}</td>
+    </tr>"));
+
             var emailModel = new EmailMessage
             {
-                To = user.Email,
+                To = user.Email!,
                 Subject = "Успішне оформлення замовлення (PIZUSHI)",
                 Body = $@"
-        <p>{model.RecipientName}, ваше замовлення на суму {price:N2} грн було успішно оформлено.</p>
-        <p>Незабаром його буде відправлено.</p>"
+        <div style='font-family: Arial, sans-serif; color: #333;'>
+            <h2 style='color: #FF6B00;'>Дякуємо за ваше замовлення, {model.RecipientName}!</h2>
+            <p>Ваше замовлення на суму <strong>{price:N2} грн</strong> було успішно оформлено.</p>
+            <p>Незабаром його буде передано на доставку.</p>
+
+            <h3 style='margin-top: 30px; color: #FF6B00;'>Деталі замовлення:</h3>
+            <table style='width: 100%; border-collapse: collapse; margin-top: 10px;'>
+                <thead>
+                    <tr style='background-color: #FF6B00; color: white;'>
+                        <th style='padding: 10px; text-align: left;'>Назва</th>
+                        <th style='padding: 10px; text-align: left;'>Ціна</th>
+                        <th style='padding: 10px; text-align: left;'>Кількість</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {productRows}
+                </tbody>
+            </table>
+
+        </div>"
             };
 
             var result = await smtpService.SendEmailAsync(emailModel);
