@@ -1,7 +1,7 @@
 ﻿
-namespace Core.Models.Delivery;
+namespace Core.Models.General;
 
-public class PostDepartmentModel
+public class SimpleModel
 {
     public long Id { get; set; }
     public string Name { get; set; } = string.Empty;

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Core.Models.Delivery;
+using Core.Models.General;
 using Core.Models.Order;
 using Domain.Entities;
 using Domain.Entities.Delivery;
@@ -10,8 +11,8 @@ public class DeliveryMapper : Profile
 {
     public DeliveryMapper()
     {
-        CreateMap<CityEntity, CityModel>();
-        CreateMap<PostDepartmentEntity, PostDepartmentModel>();
-        CreateMap<PaymentTypeEntity, PaymentTypeModel>();
+        CreateMap<CityEntity, SimpleModel>();
+        CreateMap<PostDepartmentEntity, SimpleModel>();
+        CreateMap<PaymentTypeEntity, SimpleModel>();
     }
 }
