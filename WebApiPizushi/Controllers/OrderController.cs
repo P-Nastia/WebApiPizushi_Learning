@@ -18,8 +18,8 @@ public class OrderController(IOrderService orderService) : ControllerBase
         return Ok(model);
     }
 
-    [HttpGet("{city}")]
-    public async Task<IActionResult> GetCities(string city)
+    [HttpGet("search-city")]
+    public async Task<IActionResult> GetCities([FromQuery]string? city)
     {
         if (string.IsNullOrEmpty(city) || string.IsNullOrWhiteSpace(city))
             return BadRequest(city);
