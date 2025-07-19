@@ -41,8 +41,8 @@ public class OrderController(IOrderService orderService) : ControllerBase
         var model = await orderService.GetPymentTypesAsync();
         return Ok(model);
     }
-    [HttpPost] 
-    public async Task<IActionResult> Order([FromQuery] DeliveryInfoCreateModel model)
+    [HttpPost("create")] 
+    public async Task<IActionResult> Order([FromForm] DeliveryInfoCreateModel model)
     {
         if (!ModelState.IsValid)
             return BadRequest(model);
