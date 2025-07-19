@@ -36,7 +36,7 @@ public class CartsController(ICartService cartService, IAuthService authService)
         return Ok();
     }
     [Authorize]
-    [HttpPost("addRange")]
+    [HttpPost]
     public async Task<IActionResult> AddRange([FromBody] List<CartCreateUpdateModel> modelItems)
     {
         foreach(var item in modelItems)
