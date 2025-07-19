@@ -33,14 +33,15 @@ public class OrderService(IAuthService authService, ISmtpService smtpService, Ap
             await context.Orders.AddAsync(order);
             await context.SaveChangesAsync();
 
-            var orderItems = user.Carts.Select(pr =>
+            List<OrderItemEntity> orderItems = new();
+            foreach(var item in user.Carts)
             {
-                var orderItem = mapper.Map<OrderItemEntity>(pr);
+                var orderItem = mapper.Map<OrderItemEntity>(item);
                 orderItem.OrderId = order.Id;
-                return orderItem;
-            }).ToList();
+                orderItems.Add(orderItem);
+            }
 
-            await context.OrderItems.AddRangeAsync(orderItems);
+            await context.AddRangeAsync(orderItems);
             await context.SaveChangesAsync();
 
             var delInfo = mapper.Map<DeliveryInfoEntity>(model);
