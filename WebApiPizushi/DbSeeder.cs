@@ -125,7 +125,14 @@ public static class DbSeeder
                     var entityItems = mapper.Map<List<IngredientEntity>>(items);
                     foreach (var entity in entityItems)
                     {
-                        entity.Image = await imageService.SaveImageFromUrlAsync(entity.Image);
+                        try
+                        {
+                            entity.Image = await imageService.SaveImageFromUrlAsync(entity.Image);
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine("Error Json Parse Data", ex.Message);
+                        }
                     }
                     await context.Ingredients.AddRangeAsync(entityItems);
                     await context.SaveChangesAsync();
