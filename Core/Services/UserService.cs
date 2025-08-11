@@ -4,6 +4,7 @@ using Bogus;
 using Core.Interfaces;
 using Core.Models.AdminUser;
 using Core.Models.Search;
+using Core.Models.Search.Users;
 using Core.Models.Seeder;
 using Domain;
 using Domain.Entities.Identity;

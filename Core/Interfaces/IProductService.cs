@@ -1,6 +1,8 @@
 ﻿
 using Core.Models.Product;
 using Core.Models.Product.Ingredient;
+using Core.Models.Search;
+using Core.Models.Search.Products;
 using Domain.Entities;
 
 namespace Core.Interfaces;
@@ -17,5 +19,5 @@ public interface IProductService
     Task<IEnumerable<ProductSizeModel>> GetSizesAsync();
     Task Delete(ProductDeleteModel model);
     Task<List<ProductItemModel>> GetByCategory(string category);
-
+    Task<SearchResponseModel<ProductItemModel>> SearchProducts(ProductsSearchParams searchParams);
 }

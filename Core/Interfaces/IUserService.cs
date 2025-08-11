@@ -1,6 +1,7 @@
 ﻿
 using Core.Models.AdminUser;
 using Core.Models.Search;
+using Core.Models.Search.Users;
 using Core.Models.Seeder;
 
 namespace Core.Interfaces;

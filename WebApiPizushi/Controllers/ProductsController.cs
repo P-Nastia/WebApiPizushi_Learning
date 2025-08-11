@@ -1,10 +1,15 @@
 ﻿using Core.Interfaces;
+using Core.Models.AdminUser;
 using Core.Models.Category;
 using Core.Models.Product;
 using Core.Models.Product.Ingredient;
+using Core.Models.Search.Users;
+using Core.Models.Search;
 using Core.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
+using Core.Models.Search.Products;
 
 namespace WebApiPizushi.Controllers
 {
@@ -88,6 +93,22 @@ namespace WebApiPizushi.Controllers
             if (entity != null)
                 return Ok(model);
             else return BadRequest("Error edit product!");
+        }
+
+        [HttpPost("search")]
+        public async Task<SearchResponseModel<ProductItemModel>> GetProductsSearchAsync(ProductsSearchParams searchParams)
+        {
+            Stopwatch stopWatch = new Stopwatch();
+            stopWatch.Start();
+            var model = await productService.SearchProducts(searchParams);
+            stopWatch.Stop();
+            // Get the elapsed time as a TimeSpan value.
+            TimeSpan ts = stopWatch.Elapsed;
+            string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
+                ts.Hours, ts.Minutes, ts.Seconds,
+                ts.Milliseconds / 10);
+            Console.WriteLine("RunTime " + elapsedTime);
+            return model;
         }
     }
 }

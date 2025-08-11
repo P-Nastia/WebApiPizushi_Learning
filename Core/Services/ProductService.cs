@@ -1,11 +1,15 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Core.Interfaces;
+using Core.Models.AdminUser;
 using Core.Models.Product;
 using Core.Models.Product.Ingredient;
+using Core.Models.Search;
+using Core.Models.Search.Products;
 using Domain;
 using Domain.Entities;
 using Domain.Entities.Identity;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace Core.Services
@@ -164,6 +168,46 @@ namespace Core.Services
         public async Task<List<ProductItemModel>> List()
         {
             return await context.Products.Where(x=>!x.IsDeleted).ProjectTo<ProductItemModel>(mapper.ConfigurationProvider).ToListAsync();
+        }
+
+        public async Task<SearchResponseModel<ProductItemModel>> SearchProducts(ProductsSearchParams searchParams)
+        {
+            var query = context.Products.AsQueryable();
+
+            if (!string.IsNullOrEmpty(searchParams.CategoryName))
+            {
+                var categoryNameLower = searchParams.CategoryName.ToLower();
+                query = query.Where(p => p.Category != null &&
+                                         (p.Category.Name.ToLower().Contains(categoryNameLower) ||
+                                          p.Category.Slug.ToLower().Contains(categoryNameLower)));
+            }
+
+            if (!string.IsNullOrEmpty(searchParams.Value))
+            {
+                var valueLower = searchParams.Value.ToLower();
+                query = query.Where(p => p.Name.ToLower().Contains(valueLower) ||
+                                         p.Category != null &&
+                                         (p.Category.Name.ToLower().Contains(valueLower) ||
+                                          p.Category.Slug.ToLower().Contains(valueLower)));
+            }
+
+            var total = await query.CountAsync();
+
+            var products = await query
+                .Skip((searchParams.PaginationRequest.CurrentPage - 1) * searchParams.PaginationRequest.ItemsPerPage)
+                .Take(searchParams.PaginationRequest.ItemsPerPage)
+                .ProjectTo<ProductItemModel>(mapper.ConfigurationProvider)
+                .ToListAsync();
+
+            return new SearchResponseModel<ProductItemModel>
+            {
+                List = products,
+                Pagination = new PaginationResponseModel
+                {
+                    CurrentPage = searchParams.PaginationRequest.CurrentPage,
+                    TotalAmount = total
+                }
+            };
         }
 
         public async Task<ProductIngredientModel> UploadIngredient(CreateIngredientModel model)

@@ -1,6 +1,4 @@
-﻿
-
-namespace Core.Models.Search;
+﻿namespace Core.Models.Search.Users;
 
 public class UsersSearchParams
 {
