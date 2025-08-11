@@ -68,6 +68,13 @@ namespace WebApiPizushi.Controllers
 
             return Ok(model);
         }
+        [HttpGet("{category}")]
+        public async Task<IActionResult> GetByCategory(string category)
+        {
+            var model = await productService.GetByCategory(category);
+
+            return Ok(model);
+        }
         [HttpDelete("delete")]
         public async Task<IActionResult> Delete(ProductDeleteModel model)
         {

@@ -16,5 +16,6 @@ public interface IProductService
     Task<IEnumerable<ProductIngredientModel>> GetIngredientsAsync();
     Task<IEnumerable<ProductSizeModel>> GetSizesAsync();
     Task Delete(ProductDeleteModel model);
+    Task<List<ProductItemModel>> GetByCategory(string category);
 
 }

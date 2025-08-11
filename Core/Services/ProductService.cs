@@ -130,6 +130,11 @@ namespace Core.Services
             return item;
         }
 
+        public async Task<List<ProductItemModel>> GetByCategory(string category)
+        {
+            return await context.Products.Where(x => !x.IsDeleted && x.Category.Slug == category).ProjectTo<ProductItemModel>(mapper.ConfigurationProvider).ToListAsync();
+        }
+
         public async Task<ProductItemModel> GetById(int id)
         {
             return await context.Products.Where(x=>x.Id == id).ProjectTo<ProductItemModel>(mapper.ConfigurationProvider).FirstOrDefaultAsync();
