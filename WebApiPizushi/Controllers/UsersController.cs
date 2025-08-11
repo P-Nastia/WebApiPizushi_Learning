@@ -21,7 +21,7 @@ public class UsersController(IUserService userService) : Controller
         return Ok(model);
     }
     [HttpPost("search")]
-    public async Task<UsersSearchResponseModel> GetUsersSearchAsync(UsersSearchParams searchParams)
+    public async Task<SearchResponseModel<AdminUserItemModel>> GetUsersSearchAsync(UsersSearchParams searchParams)
     {
         Stopwatch stopWatch = new Stopwatch();
         stopWatch.Start();

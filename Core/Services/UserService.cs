@@ -30,7 +30,7 @@ public class UserService(UserManager<UserEntity> userManager,
 
         return users;
     }
-    public async Task<UsersSearchResponseModel> GetSearchUsersAsync(UsersSearchParams searchParams)
+    public async Task<SearchResponseModel<AdminUserItemModel>> GetSearchUsersAsync(UsersSearchParams searchParams)
     {
         var query = userManager.Users.ProjectTo<AdminUserItemModel>(mapper.ConfigurationProvider);
 
@@ -70,9 +70,9 @@ public class UserService(UserManager<UserEntity> userManager,
             .Take(searchParams.PaginationRequest.ItemsPerPage)
             .ToList();
 
-        return new UsersSearchResponseModel
+        return new SearchResponseModel<AdminUserItemModel>
         {
-            Users = users,
+            List = users,
             Pagination = new PaginationResponseModel
             {
                 CurrentPage = searchParams.PaginationRequest.CurrentPage,
