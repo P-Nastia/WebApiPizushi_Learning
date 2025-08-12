@@ -9,7 +9,7 @@ namespace Core.Models.Delivery;
 
 public class DeliveryInfoModel
 {
-    public string RecepientName { get; set; } = String.Empty;
+    public string RecipientName { get; set; } = String.Empty;
     public string PhoneNumber { get; set; } = String.Empty;
     public SimpleModel PostDepartment { get; set; } = null;
     public SimpleModel PaymentType { get; set; } = null;
