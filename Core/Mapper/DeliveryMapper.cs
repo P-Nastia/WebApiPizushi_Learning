@@ -14,5 +14,9 @@ public class DeliveryMapper : Profile
         CreateMap<CityEntity, SimpleModel>();
         CreateMap<PostDepartmentEntity, SimpleModel>();
         CreateMap<PaymentTypeEntity, SimpleModel>();
+        CreateMap<DeliveryInfoCreateModel, DeliveryInfoEntity>();
+        CreateMap<DeliveryInfoEntity, DeliveryInfoModel>()
+            .ForMember(dest => dest.City, opt => opt
+            .MapFrom(src => src.PostDepartment.City));
     }
 }
