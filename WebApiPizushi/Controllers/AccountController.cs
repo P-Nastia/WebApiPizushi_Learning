@@ -9,6 +9,8 @@ using Domain.Entities.Identity;
 using Core.Interfaces;
 using Core.Models.Account;
 using Core.Services;
+using Microsoft.AspNetCore.Http.HttpResults;
+using Newtonsoft.Json.Linq;
 
 namespace WebApiPizushi.Controllers
 {
@@ -104,6 +106,31 @@ namespace WebApiPizushi.Controllers
         {
             await accountService.ResetPasswordAsync(model);
             return Ok();
+        }
+        [HttpPut]
+        public async Task<IActionResult> Edit([FromForm] EditAccountModel model)
+        {
+            var res = await accountService.Edit(model);
+            if (res != null)
+            {
+                return Ok(new
+                {
+                    Token = res
+                });
+            }
+        
+            return BadRequest("Failed to update user");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordModel model)
+        {
+            var res = await accountService.ChangePassword(model);
+
+            if (res)
+                return Ok();
+
+            return BadRequest(new { oldPassword = "Change password error" });
         }
     }
 }

@@ -16,7 +16,9 @@ public class AccountService(IJwtTokenService tokenService,
     IMapper mapper,
     IImageService imageService,
     IConfiguration configuration,
-    ISmtpService smtpService) : IAccountService
+    ISmtpService smtpService,
+    IAuthService authService,
+    IJwtTokenService jwtTokenService) : IAccountService
 {
 
     public async Task<string> LoginByGoogle(string token)
@@ -116,5 +118,42 @@ public class AccountService(IJwtTokenService tokenService,
             TokenOptions.DefaultProvider,
             "ResetPassword",
             model.Token);
+    }
+
+    public async Task<string> Edit(EditAccountModel model)
+    {
+        var userId = await authService.GetUserId();
+        var user = await userManager.FindByIdAsync(userId.ToString());
+        if (user != null)
+        {
+            if (model.Image != null)
+            {
+                if (!string.IsNullOrEmpty(user.Image))
+                    await imageService.DeleteImageAsync(user.Image);
+                var imagePath = await imageService.SaveImageAsync(model.Image);
+                user.Image = imagePath;
+            }
+            user.Email = model.Email;
+            user.FirstName = model.FirstName;
+            user.LastName = model.LastName;
+            await userManager.UpdateAsync(user);
+            var newToken = await jwtTokenService.CreateTokenAsync(user);
+            return newToken;
+        }
+        return "";
+    }
+
+    public async Task<bool> ChangePassword(ChangePasswordModel model)
+    {
+        var userId = await authService.GetUserId();
+        var user = await userManager.FindByIdAsync(userId.ToString());
+
+        if (user == null)
+            return false;
+
+        var result = await userManager.ChangePasswordAsync(user, model.OldPassword, model.NewPassword);
+        if (result.Succeeded)
+            return true;
+        return false;
     }
 }
