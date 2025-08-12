@@ -10,4 +10,5 @@ public class OrderItemModel
     public string ProductSlug { get; set; } = string.Empty;
     public string ProductName { get; set; } = string.Empty;
     public string ProductImage { get; set; } = string.Empty;
+    public string CategorySlug { get; set; } = string.Empty;
 }

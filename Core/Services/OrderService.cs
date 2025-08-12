@@ -110,6 +110,13 @@ public class OrderService(IAuthService authService, ISmtpService smtpService, Ap
             .Where(x => x.UserId == userId)
             .ProjectTo<OrderModel>(mapper.ConfigurationProvider)
             .ToListAsync();
+        foreach(var orderModel in orderModelList)
+        {
+            foreach(var orderItem in orderModel.OrderItems)
+            {
+                orderItem.CategorySlug = await context.Products.Where(x => x.Id == orderItem.ProductId).Select(x => x.Category.Slug).FirstOrDefaultAsync();
+            }
+        }
         orderModelList = orderModelList
         .Select(item =>
         {
