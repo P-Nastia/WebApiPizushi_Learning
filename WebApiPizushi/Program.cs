@@ -13,6 +13,7 @@ using Core.Interfaces;
 using Core.Services;
 using Core.Models.Account;
 using Core.Extensions;
+using Quartz;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -116,6 +117,12 @@ builder.Services.AddValidatorsFromAssemblies(AppDomain.CurrentDomain.GetAssembli
 builder.Services.AddMvc(options =>
 {
     options.Filters.Add<ValidationFilter>();
+});
+
+builder.Services.AddQuartz();
+builder.Services.AddQuartzHostedService(opt =>
+{
+    opt.WaitForJobsToComplete = true; // значить, що коли сервер зупиняється, всі задачі в джобі мають бути завершені перед цим
 });
 
 builder.Services.AddCors();// щоби сервери могли взаємодіяти між собою
