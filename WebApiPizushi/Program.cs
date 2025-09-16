@@ -14,6 +14,7 @@ using Core.Services;
 using Core.Models.Account;
 using Core.Extensions;
 using Quartz;
+using WebApiPizushi.Jobs;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -41,6 +42,7 @@ builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<ISmtpService, SmtpService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<INovaPoshtaService, NovaPoshtaService>();
+builder.Services.AddScoped<IDbSeederService, DbSeederService>();
 
 builder.Services.AddHttpContextAccessor(); // дл€ вит€гненн€ юзера, щоб отримати доступ до HttpContext в серв≥сах
 
@@ -119,7 +121,17 @@ builder.Services.AddMvc(options =>
     options.Filters.Add<ValidationFilter>();
 });
 
-builder.Services.AddQuartz();
+builder.Services.AddQuartz(q =>
+{
+    var jobKey = new JobKey(nameof(DbSeedJob));
+    q.AddJob<DbSeedJob>(opt => opt.WithIdentity(jobKey));
+
+    q.AddTrigger(opt => opt
+    .ForJob(jobKey)
+    .WithIdentity($"{nameof(DbSeedJob)}-trigger")
+    .StartNow());
+});
+
 builder.Services.AddQuartzHostedService(opt =>
 {
     opt.WaitForJobsToComplete = true; // значить, що коли сервер зупин€Їтьс€, вс≥ задач≥ в джоб≥ мають бути завершен≥ перед цим
@@ -151,6 +163,6 @@ app.UseStaticFiles(new StaticFileOptions // наданн€ доступу до папки з фото
     RequestPath = $"/{dir}" // куди звертатис€
 });
 
-await app.SeedData();
+//await app.SeedData();
 
 app.Run();
